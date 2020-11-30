@@ -1,4 +1,6 @@
-file = "yzbqklnj"
+import inputAoC
+
+file = inputAoC.get_input(4,2015)
 
 import hashlib
 
@@ -8,8 +10,7 @@ while True:
 	chaine = file + str(compt)
 	result = hashlib.md5(chaine.encode())
 	res = result.hexdigest()
-	#print(hex(int("0x"+res,16)>>104), res)
-	if not (int("0x"+res,16)>>104):
+	if not (int("0x"+res,16)>>104): #108 pour 5
 		break
 	compt += 1
 
