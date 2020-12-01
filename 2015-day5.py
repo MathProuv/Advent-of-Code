@@ -1,4 +1,4 @@
-file = open("day5.txt", "r")
+file = open("2015-day5.txt", "r")
 
 compt = 0
 
