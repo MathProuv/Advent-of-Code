@@ -3,22 +3,15 @@ import inputAoC
 x = inputAoC.get_input(2).split("\n")
 
 res = 0
-
 for instr in x:
-    restriction, letter, password = tuple(instr.replace(":","").split())
-    a,b = list(map(int, restriction.split("-")))
-    if password.count(letter) in range(a,b+1):
-        res += 1
-
+    restr, letter, password = instr.replace(":","").split()
+    a,b = [int(i) for i in restr.split("-")]
+    res += (a <= password.count(letter) <= b)
 print(res)
 
 res = 0
-
 for instr in x:
-    restriction, letter, password = tuple(instr.replace(":","").split())
-    a,b = list(map(int, restriction.split("-")))
-    level = (password[a-1] == letter) + (password[b-1] == letter)
-    if level == 1:
-        res += 1
-
+    restr, letter, password = instr.replace(":","").split()
+    a,b = [int(i) for i in restr.split("-")]
+    res += 1 == (password[a-1] == letter) + (password[b-1] == letter)
 print(res)
