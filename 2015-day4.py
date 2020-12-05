@@ -1,6 +1,6 @@
 import inputAoC
 
-file = inputAoC.get_input(4,2015)
+file = inputAoC.get_input_file(4,2015)
 
 import hashlib
 

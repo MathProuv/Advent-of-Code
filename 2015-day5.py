@@ -1,4 +1,7 @@
-file = open("2015-day5.txt", "r")
+import inputAoC as aoc
+aoc.get_input_file(5,2015)
+
+file = open("inputs/2015_5.txt", "r")
 
 compt = 0
 

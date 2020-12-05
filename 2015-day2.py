@@ -1,4 +1,7 @@
-file = open("day2.txt", "r")
+import inputAoC as aoc
+aoc.get_input_file(2,2015)
+
+file = open("inputs/2015_2.txt", "r")
 
 res1 = 0
 res2 = 0

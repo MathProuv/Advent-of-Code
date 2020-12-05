@@ -1,6 +1,6 @@
 import inputAoC
 
-file = inputAoC.get_input(6, 2015)
+file = inputAoC.get_input_file(6, 2015)
 
 size = 1000
 instructs = file.split("\n")
