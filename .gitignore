@@ -1,5 +1,7 @@
-__pycache__/*
-inputs/*
 personnel.py
-md5anta.py
+inputs/*
+
+__pycache__/*
 *fetch*
+
+md5anta.py
