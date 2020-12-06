@@ -4,9 +4,7 @@ groups = aoc.get_input_file(6).split("\n\n")
 res1 = 0
 for group in groups:
     x = group.replace("\n","")
-    letters = set()
-    for letter in x:
-        letters.add(letter)
+    letters = set(x)
     res1 += len(letters)
 
 print(res1)
