@@ -39,20 +39,16 @@ def see_is_in_bag(to_see,seen):
 res1 = see_is_in_bag(["shiny gold"], set())
 print(res1)
 
-def see_in_to_see(to_see):
+def see_in_bag(to_see):
     if not to_see:
         return 0
-    seen_here = []
     res = 0
-    for bag in to_see:
-        containing = contains[bags.index(bag)]
-        for n,b in containing:
-            res += n
-            for _ in range(n):
-                seen_here.append(b)
-    return res + see_in_to_see(list(seen_here))
+    containing = contains[bags.index(to_see)]
+    for n,b in containing:
+        res += n + n * see_in_bag(b)
+    return res
 
-res2 = see_in_to_see(["shiny gold"])
+res2 = see_in_bag("shiny gold")
 print(res2)
 
 """ #matrice d'adjacence
