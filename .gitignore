@@ -2,6 +2,7 @@ personnel.py
 inputs/*
 
 __pycache__/*
+*nope*
 *fetch*
 
 md5anta.py
