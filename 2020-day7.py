@@ -1,5 +1,4 @@
 import inputAoC as aoc
-from collections import deque
 
 rules = aoc.get_input_file(7,2020).split("\n")
 n = len(rules)
@@ -7,8 +6,7 @@ n = len(rules)
 bags = []
 contains = []
 
-for r in range(n):
-    rule = rules[r]
+for rule in rules:
     index_bag = rule.index(" bags ")
     index_contain = index_bag + len(" bags contain ")
     bag = rule[:index_bag]
