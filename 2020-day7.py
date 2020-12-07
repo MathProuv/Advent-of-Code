@@ -39,11 +39,11 @@ def see_is_in_bag(to_see,seen):
 res1 = see_is_in_bag(["shiny gold"], set())
 print(res1)
 
-def see_in_bag(to_see):
-    if not to_see:
+def see_in_bag(bag):
+    if not bag:
         return 0
     res = 0
-    containing = contains[bags.index(to_see)]
+    containing = contains[bags.index(bag)]
     for n,b in containing:
         res += n + n * see_in_bag(b)
     return res
