@@ -1,8 +1,7 @@
 private.py
 inputs/*
 
-__pycache__/*
-*/__pycache__/*
+*.pyc
 
 *nope*
 *fetch*
