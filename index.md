@@ -8,6 +8,8 @@ Je ne vais pas tout arrêter pour autant ! Je vais profiter de ce temps pour me 
 
 Ceci est juste le début donc, de cette page web d'apprentissage.
 
+---
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/MathProuv/Advent-of-Code/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
