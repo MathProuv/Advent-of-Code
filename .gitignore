@@ -2,6 +2,7 @@ private.py
 inputs/*
 
 *.pyc
+*__pycache__*
 
 *nope*
 *fetch*
