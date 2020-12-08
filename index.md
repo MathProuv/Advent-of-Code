@@ -2,7 +2,7 @@
 
 Bonjour,
 
-Je veux profiter de mon arrêt d'études pour me ressourcer. J'ai donc pris la dure décision de faire une pause dans mes études, et toute forme de vraie réflexion.
+Je n'étais plus en capacité de poursuivre mon travail. J'ai donc pris la dure décision de faire une pause dans mes études et toute forme de vraie réflexion.
 
 Je ne vais pas tout arrêter pour autant ! Je vais profiter de ce temps pour me plonger dans l'événement `Advent of Code` de cette année et pour par ce biais, en apprendre davantage en programmation, web et commandes git.
 
