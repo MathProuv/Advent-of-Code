@@ -1,3 +1,13 @@
+# Bienvenue
+
+Bonjour,
+
+Je veux profiter de mon arrêt d'études pour me ressourcer. J'ai donc pris la dure décision de faire une pause dans mes études, et toute forme de vraie réflexion.
+
+Je ne vais pas tout arrêter pour autant ! Je vais profiter de ce temps pour me plonger dans l'événement `Advent of Code` de cette année et pour par ce biais, en apprendre davantage en programmation, web et commandes git.
+
+Ceci est juste le début donc, de cette page web d'apprentissage.
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/MathProuv/Advent-of-Code/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
