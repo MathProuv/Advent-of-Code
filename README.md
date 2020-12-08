@@ -14,7 +14,7 @@ Il faudrait aussi un dossier inputs dans lequel seront enregistrés les fichiers
 
 Pour une meilleure hiérarchisation de mes codes, j'ai préféré les séparer dans des sous-packages. Ainsi, il y a maintenant une petite manipulation à faire pour pouvoir utiliser `inputAoC`. Il va donc falloir utiliser exactement la même hiérarchie et respecter précisément le nom des fichiers.
 
-En particulier, pour runner le code du jour `J` de l'année `AAAA` (avec `J` entre 1 et 25 et `AAAA` entre 2015 et 2020), le code doit être dans le dossier `yAAAA` et le fichier doit s'appeler `AAAA-dayJ.py`. Il faudra ensuite exécuter le fichier `__main__.py` d'une des façons suivantes :
+En particulier, pour runner le code du jour `J` de l'année `AAAA` (avec `J` entre 1 et 25 et `AAAA` entre 2015 et 2025), le code doit être dans le dossier `yAAAA` et le fichier doit s'appeler `AAAA-dayJ.py` (sans zero inutile). Il faudra ensuite exécuter le fichier `__main__.py` d'une des façons suivantes :
 
-    python __main__.py J AAAA
     python ../Advent-of-Code J AAAA
+    python __main__.py J AAAA
