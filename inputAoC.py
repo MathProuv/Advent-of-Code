@@ -1,9 +1,9 @@
-import personnel
+import private
 
 def get_input(day, year=2020):
     """ return the personnal input of a day in Advent of Code """
     import requests
-    cookies = personnel.cookies
+    cookies = private.cookies
     url = url_aoc(day,year) + "/input"
     try:
         requete = requests.get(url=url, cookies=cookies)
