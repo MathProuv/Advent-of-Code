@@ -3,7 +3,8 @@ from math import sqrt #, factorial
 from itertools import permutations
 
 pairs = [pair.split() for pair in aoc.get_input_file(9,2015).split("\n")]
-n = int((1 + sqrt(1+8*len(pairs)))/2) #len(locations) car len(pairs) = k = n(n-1)/2
+n = int((1 + sqrt(1+8*len(pairs)))/2) 
+#n = len(locations) car len(pairs) = k = n(n-1)/2
 
 locations = [pairs[0][0]] + [pairs[i][2] for i in range(n-1)]
 #print(locations)
