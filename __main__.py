@@ -19,5 +19,5 @@ else:
         __import__(path)
     except ModuleNotFoundError:
         print("\n    Le problème du jour " + AAAA + "/" + J + " n'a pas encore été résolu")
-    except :
-        print("\n    Il y a un problème à l'éxecution")
+    # except:
+    #     print("\n    Il y a un problème à l'éxecution")
