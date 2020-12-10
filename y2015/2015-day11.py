@@ -26,9 +26,9 @@ def tests_increase():
     assert increase("zz") == "aa"
     assert increase("abc") == "abd"
     assert increase("abzzz") == "acaaa"
-tests_increase()
+#tests_increase()
 
-def check(password):
+def is_valid(password):
     if "i" in password or "j" in password or "l" in password:
         return False
     
@@ -40,15 +40,18 @@ def check(password):
         return False
     
     ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+    suite = False
     for i in range(len(ALPHABET)-2):
         if ALPHABET[i:i+3] in password:
-            return True
-    
-    return False
+            suite = True
+    if not suite:
+        return False
+        
+    return True
 
 def next_password(password):
     res = increase(password)
-    while not check(res):
+    while not is_valid(res):
         res = increase(res)
     return res
 
