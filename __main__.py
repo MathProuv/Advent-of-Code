@@ -2,10 +2,10 @@ import sys
 import inputAoC
 
 try:
-    J, AAAA = sys.argv[1], sys.argv[2]
-    j, aaaa = int(J), int(AAAA)
-    J, AAAA = str(j), str(aaaa) #J et AAAA n'ont pas de leading zeroes et sont au bon format
-    if not (1 <= j <= 25 and 2015 <= aaaa <= 2025):
+    JJ, AAAA = sys.argv[1], sys.argv[2]
+    jj, aaaa = int(JJ), int(AAAA)
+    JJ, AAAA = ('0'+str(jj))[-2:], str(aaaa) #J et AAAA sont au bon format
+    if not (1 <= jj <= 25 and 2015 <= aaaa <= 2025):
         raise Exception
 except:
     print("""
@@ -14,10 +14,10 @@ except:
     """)
 
 else:
-    path = "y" + AAAA + "." + AAAA + "-day" + J
+    path = "y" + AAAA + "." + AAAA + "-day" + JJ
     try:
         __import__(path)
     except ModuleNotFoundError:
-        print("\n    Le problème du jour " + AAAA + "/" + J + " n'a pas encore été résolu")
+        print("\n    Le problème du jour " + AAAA + "/" + JJ + " n'a pas encore été résolu")
     # except:
     #     print("\n    Il y a un problème à l'éxecution")
