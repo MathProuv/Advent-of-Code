@@ -3,7 +3,7 @@ import json
 
 doc = aoc.get_input_file(12,2015)
 
-res = 0
+res1 = 0
 temp = 0
 
 for carac in doc:
@@ -17,12 +17,22 @@ for carac in doc:
         else:
             temp = 10*temp - int(carac)
     else:
-        res += temp
+        res1 += temp
         temp = 0
     
-print(res)
+print(res1)
 
-dict_doc = json.loads(doc)
+def somme_nombres(obj):
+    if type(obj) == int:
+        return obj
+    elif type(obj) == dict and "red" not in obj.values(): #:
+        return sum([somme_nombres(val) for val in obj.values()])
+    elif type(obj) == list:
+        return sum([somme_nombres(val) for val in obj])
+    else:
+        return 0
 
+res2 = somme_nombres(json.loads(doc))
+print(res2)
 
 
