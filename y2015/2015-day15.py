@@ -8,7 +8,7 @@ instrs = aoc.get_input_file(15,2015).split("\n")
 instrs_ex = ex.split("\n")
 
 class Ingredient:
-    def __init__(self, instr):
+    def __init__(self, instr: str):
         instr = instr.replace(": ",", ")
         props = [prop.split() for prop in instr.split(", ")]
         self.name = props[0][0]
@@ -18,7 +18,7 @@ class Ingredient:
         self.texture = int(props[4][1])
         self.calories = int(props[5][1])
 
-    def get_proprietes(self):
+    def get_proprietes(self) -> [int]:
         proprietes = []
         proprietes.append(self.capacity)
         proprietes.append(self.durability)
@@ -27,7 +27,7 @@ class Ingredient:
         proprietes.append(self.calories)
         return proprietes
 
-    def print(self):
+    def print(self) -> str:
         string = self.name + ": "
         string += "capacity " + str(self.capacity) + ", "
         string += "durability " + str(self.durability) + ", "
@@ -58,7 +58,7 @@ class Cookie:
         self.texture = max(0, proprietes[3])
         self.calories = max(0, proprietes[4])
 
-    def print(self):
+    def print(self) -> str:
         string = ""
         for i in range(self.n):
             string += str(self.quantites[i]) + " "
@@ -71,10 +71,10 @@ class Cookie:
 
     def score(self) -> int:
         proprietes = self.get_proprietes()
-        proprietes.pop()
+        proprietes.pop() # sans les calories
         return prod(proprietes)
     
-    def get_proprietes(self):
+    def get_proprietes(self) -> [int]:
         proprietes = []
         proprietes.append(self.capacity)
         proprietes.append(self.durability)
