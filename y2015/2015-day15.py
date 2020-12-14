@@ -83,13 +83,10 @@ class Cookie:
         proprietes.append(self.calories)
         return proprietes
 
-def get_ingredients(instrs):
-    return [Ingredient(instr) for instr in instrs]
-
 
 TOTAL = 100
 
-ingredient_ex = get_ingredients(instrs_ex)
+ingredient_ex = [Ingredient(instr) for instr in instrs_ex]
 
 res1_ex = 0
 res2_ex = 0
@@ -111,7 +108,7 @@ print(res1_ex, best_qtt)
 print(res2_ex, best_qtt2)
 
 
-ingredients = get_ingredients(instrs)
+ingredients = [Ingredient(instr) for instr in instrs]
 
 res1 = 0
 res2 = 0
@@ -133,7 +130,6 @@ for x1 in range(1,TOTAL+1):
             res1 = max(res1, score)
             if cook.calories == 500:
                 res2 = max(res2, score)
-
 
 print(res1)
 print(res2)
