@@ -33,7 +33,7 @@ def turn2(mem, last_elem, turn):
     else:
         new = 0
         mem[last_elem] = turn
-    print("last_elem =", last_elem,"c'était le tour", turn,"(+1 cf tour 0)")
+    #print("last_elem =", last_elem,"c'était le tour", turn,"(+1 cf tour 0)")
     #print(mem)
     return new
 
@@ -50,22 +50,25 @@ def play2(mem, n=30000000):
         last_elem = turn2(mem, last_elem, turn+1)
     return last_elem
 
-#print(play([0,3,6],10))
 mem_ex = dict()
 for index, elem in enumerate(start_ex):
     mem_ex[int(elem)] = index
-print(play1(start_ex, 2020))
-print(play2(mem_ex, 10))
+# print(play1(start_ex, 10))
+# print(play2(mem_ex, 10))
+
+assert play1(start_ex,2020) == 436
+assert play2(mem_ex,2020) == 436
+
 
 res1 = play1(start)
 print(res1)
 
 mem = dict()
 for index, elem in enumerate(start):
-    mem[int(elem)] = [index]
+    mem[int(elem)] = index
 # print(mem)
 
-# C'est un peu long... (~10min) Regarde un épisode sur Netflix.. Je conseille The Queen's Gambit
+print("""C'est un peu long (~15s)...""")
 
-#res2 = play2(mem)
-#print(res2)
+res2 = play2(mem)
+print(res2)
