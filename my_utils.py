@@ -15,3 +15,8 @@ def rindex(liste, elem):
         if liste[i] == elem:
             return i
 
+def bin_n(number, n):
+    """Renvoie la string de number en binaire de taille n"""
+    res = bin(number)[2:]
+    res = '0'*(n-len(res)) + res
+    return res
