@@ -1,4 +1,7 @@
-
+def print_dict(dict):
+    for key, value in dict.items():
+        print(key, ":", value)
+    print()
 
 def print_matrice(matrice):
     for line in matrice:
