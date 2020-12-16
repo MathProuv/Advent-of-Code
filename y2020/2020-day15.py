@@ -1,22 +1,16 @@
 import inputAoC as aoc
+import my_utils
 
 ex = """0,3,6"""
 
 start = [int(nb) for nb in aoc.get_input_file(15,2020).split(",")]
 start_ex = [int(nb) for nb in ex.split(",")]
 
-def rindex(liste, elem):
-    if elem not in liste:
-        return -1
-    for i in range(len(liste)-1,-1,-1):
-        if liste[i] == elem:
-            return i
-
 def turn1(start):
     last = start[-1]
     new = 0
     if last in start[:-1]:
-        new = len(start)-1 - rindex(start[:-1],last)
+        new = len(start)-1 - my_utils.rindex(start[:-1],last)
     start.append(new)
     return new
 
@@ -68,7 +62,7 @@ for index, elem in enumerate(start):
     mem[int(elem)] = index
 # print(mem)
 
-print("""C'est un peu long (~15s)...""")
+#print("""C'est un peu long (~15s)...""")
 
 res2 = play2(mem)
 print(res2)
