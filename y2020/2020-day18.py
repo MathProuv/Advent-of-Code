@@ -4,7 +4,8 @@ from collections import deque
 
 exprs = aoc.get_input_file(18,2020).splitlines()
 
-def eval_parentheses(expr, fct_eval):
+def eval_parentheses(expr: str, fct_eval: function) -> str:
+    """Renvoit l'expression dont les parenthèses ont étées évaluées"""
     while "(" in expr:
         expr1 = ""
         i, par = expr.index("(") + 1, 1
@@ -19,8 +20,11 @@ def eval_parentheses(expr, fct_eval):
     return expr
 
 def evaluate(expr: str) -> int:
+    """Renvoit la valeur de l'expression évaluée dans l'ordre: () > + = *"""
+    # on évalue les ()
     expr = eval_parentheses(expr, evaluate)
 
+    # on évalue les + et les *
     parts = expr.split()
     temp = int(parts[0])
     op = None
@@ -36,17 +40,22 @@ def evaluate(expr: str) -> int:
 res1 = sum([evaluate(expr) for expr in exprs])
 print(res1)
 
-def evaluate2(expr):
+
+def evaluate2(expr: str) -> int:
+    """Renvoit la valeur de l'expression évaluée dans l'ordre: () > + > *"""
+    # on évalue les ()
     expr = eval_parentheses(expr, evaluate2)
 
     parts = expr.split()
+    # on évalue les +
     while "+" in parts:
         i = parts.index("+")
         a, b = int(parts[i-1]), int(parts[i+1])
         del parts[i:i+2]
         parts[i-1] = a + b
     
-    while "*" in parts:
+    # on évalue les *
+    while len(parts) > 1: #while "*" in parts:
         i = parts.index("*")
         a, b = int(parts[i-1]), int(parts[i+1])
         del parts[i:i+2]
