@@ -100,7 +100,7 @@ def get_pixel_neighbors4D(grid, x,y,z,w):
     res = 0
     for l in range(w-1,w+2):
         if not(0 <= l < len(grid)):
-                continue
+            continue
         for k in range(z-1, z+2):
             if not(0 <= k < len(grid[l])):
                 continue
@@ -127,18 +127,26 @@ def get_neighbors4D(grid4D):
                     res[w][z][y][x] = get_pixel_neighbors4D(grid4D, x, y, z, w)
     return res
 
-def agrandir_grid4D(grid4D,n=1):
-    res = []
-    for l in range(len(grid4D) + 2*n):
-        if n <= l < len(grid4D) + n:
-            res.append(agrandir_grid(grid4D[l-n]))
-        else:
-            grid3D = [0] * (len(grid4D[0]) + 2*n)
-            for k in range(len(grid3D)):
-                grid3D[k] = [0] * (len(grid4D[0][0]) + 2*n)
-                for j in range(len(grid3D[k])):
-                    grid3D[k][j] = '.' * (len(grid4D[0][0][0]) + 2*n)
-            res.append(grid3D)
+def agrandir_grid4D(grid,n=1):
+    """res = [0] * (len(grid) + 2*n)
+    for z in range(len(res)):
+        res[z] = [0] * (len(grid[0]) + 2*n)
+        for y in range(len(res[z])):
+            if n <= z < len(grid)+n and n <= y < len(grid[z-n])+n:
+                res[z][y] = '.' * n +  grid[z-n][y-n] + '.' * n
+            else:
+                res[z][y] = '.' * (len(grid[0][0]) + 2*n)
+    return res"""
+    res = [0] * (len(grid) + 2*n)
+    for w in range(len(res)):
+        res[w] = [0] * (len(grid[0]) + 2*n)
+        for z in range(len(res[w])):
+            res[w][z] = [0] * (len(grid[0][0]) + 2*n)
+            for y in range(len(res[w][z])):
+                if n <= w < len(grid)+n and n <= z < len(grid[w-n])+n and n <= y < len(grid[w-n][z-n])+n:
+                    res[w][z][y] = '.' * n +  grid[w-n][z-n][y-n] + '.' * n
+                else:
+                    res[w][z][y] = '.' * (len(grid[0][0][0]) + 2*n)
     return res
 
 def turn4D(grid4D):
