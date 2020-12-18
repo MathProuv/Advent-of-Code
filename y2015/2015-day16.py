@@ -52,7 +52,7 @@ def find_sue(sues_dict: dict, good_sue: dict, is_good) -> int:
     :param sues_dict: dict(int: dict(field:int))
     :param good_sue: dict(field:int) 
     :param is_good: dict(field:int),dict(field:int) -> bool"""
-    for nb, sue in sues.items():
+    for nb, sue in sues_dict.items():
         if is_good(sue, good_sue):
             return nb
     
