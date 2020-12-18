@@ -1,13 +1,11 @@
 import inputAoC as aoc
-from functools import reduce
-from collections import deque
 
 exprs = aoc.get_input_file(18,2020).splitlines()
 
-def eval_parentheses(expr: str, fct_eval: function) -> str:
-    """Renvoit l'expression dont les parenthèses ont étées évaluées"""
+def eval_parentheses(expr: str, fct_eval) -> str:
+    """Renvoit l'expression dont les parenthèses ont été évaluées"""
     while "(" in expr:
-        expr1 = ""
+        expr1 = "("
         i, par = expr.index("(") + 1, 1
         while par:
             carac = expr[i]
@@ -15,8 +13,8 @@ def eval_parentheses(expr: str, fct_eval: function) -> str:
             if carac == "(": par += 1
             expr1 += carac
             i += 1
-        res1 = fct_eval(expr1[:-1])
-        expr = expr.replace("(" + expr1, str(res1))
+        res1 = fct_eval(expr1[1:-1])
+        expr = expr.replace(expr1, str(res1))
     return expr
 
 def evaluate(expr: str) -> int:
@@ -55,13 +53,11 @@ def evaluate2(expr: str) -> int:
         parts[i-1] = a + b
     
     # on évalue les *
-    while len(parts) > 1: #while "*" in parts:
-        i = parts.index("*")
-        a, b = int(parts[i-1]), int(parts[i+1])
-        del parts[i:i+2]
-        parts[i-1] = a * b
+    res = 1
+    for nb in parts[::2]:
+        res *= int(nb)
     
-    return int(parts[0])
+    return res
 
 res2 = sum([evaluate2(expr) for expr in exprs])
 print(res2)
