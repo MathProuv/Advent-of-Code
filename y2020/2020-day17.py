@@ -38,7 +38,7 @@ def agrandir_grid(grid,n=1):
         res[z] = [0] * (len(grid[0]) + 2*n)
         for y in range(len(res[z])):
             if n <= z < len(grid)+n and n <= y < len(grid[z-n])+n:
-                res[z][y] = '.' * n +  grid[z-n][y-n] + '.' * n
+                res[z][y] = '.' * n + grid[z-n][y-n] + '.' * n
             else:
                 res[z][y] = '.' * (len(grid[0][0]) + 2*n)
     return res
@@ -74,20 +74,17 @@ def count_active(grid):
             res += y.count("#")
     return res
 
-#print(start)
 
 grid = [start.splitlines()]
-grid_ex = [ex.splitlines()]
 
-#my_utils.print_list(grid)
-
-after_1turn = turn(grid)
+"""grid_ex = [ex.splitlines()]
+my_utils.print_list(grid_ex)
+after_1turn = turn(grid_ex)
+my_utils.print_list(after_1turn)
+print("ex 3D", count_active(turns(grid_ex,6)))"""
 
 after_6turns = turns(grid,6)
 
-#my_utils.print_list(after_1turn)
-
-# print(count_active(turns(grid_ex,6)))
 res1 = count_active(after_6turns)
 print(res1)
 
@@ -110,7 +107,7 @@ def get_pixel_neighbors4D(grid, x,y,z,w):
                 for i in range(x-1,x+2):
                     if not(0 <= i < len(grid[l][k][j])):
                         continue
-                    if not( i==x and j==y and k==z ):
+                    if not( i==x and j==y and k==z and l==w):
                         res += grid[l][k][j][i]=="#"
     return res
 
@@ -128,15 +125,6 @@ def get_neighbors4D(grid4D):
     return res
 
 def agrandir_grid4D(grid,n=1):
-    """res = [0] * (len(grid) + 2*n)
-    for z in range(len(res)):
-        res[z] = [0] * (len(grid[0]) + 2*n)
-        for y in range(len(res[z])):
-            if n <= z < len(grid)+n and n <= y < len(grid[z-n])+n:
-                res[z][y] = '.' * n +  grid[z-n][y-n] + '.' * n
-            else:
-                res[z][y] = '.' * (len(grid[0][0]) + 2*n)
-    return res"""
     res = [0] * (len(grid) + 2*n)
     for w in range(len(res)):
         res[w] = [0] * (len(grid[0]) + 2*n)
@@ -172,25 +160,18 @@ def count_active4D(grid):
 
 # turns4D = turns(.,.,turn4D)
 
-grid4D = [[start.splitlines()]]
-grid4D_aggrandie = agrandir_grid4D(grid4D)
-grid4D_agg_voisins = get_neighbors4D(grid4D_aggrandie)
-after_1turn4D = turn4D(grid4D)
-after_6turns4D = turns(grid4D, 6, turn4D)
 
-"""my_utils.print_list(grid4D)
-my_utils.print_list(grid4D_aggrandie)
-my_utils.print_list(grid4D_agg_voisins)
-my_utils.print_list(after_1turn4D)"""
-
-
-grid4D_ex = [[ex.splitlines()]]
+"""grid4D_ex = [[ex.splitlines()]]
 my_utils.print_list(grid4D_ex)
 after_1turn_ex = turn4D(grid4D_ex)
 after_6turns_ex = turns(grid4D_ex,6,turn4D)
 my_utils.print_list(after_1turn_ex)
 # print(turn(grid_ex)) #rappel en 3D
-print("ex 4D", count_active4D(after_6turns_ex))
+print("ex 4D", count_active4D(after_6turns_ex))"""
+
+grid4D = [[start.splitlines()]]
+
+after_6turns4D = turns(grid4D, 6, turn4D)
 
 res2 = count_active4D(after_6turns4D)
 print(res2)
