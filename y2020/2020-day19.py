@@ -4,14 +4,18 @@ import re
 
 rules_aoc, matching_aoc = aoc.get_input_file(19, 2020).split("\n\n")
 
-
-"""rules = dict()
-
-for rule in rules_aoc.splitlines():
-    index = rule.index(":")
-    nb = int(rule[:index])
-    real_rule = rule[index+2:]
-    rules[nb] = real_rule"""
+ex = '''0: 4 1
+6: 0 5
+1: 2 3 | 3 2
+2: 4 4 | 5 5
+3: 4 5 | 5 4
+4: "a"
+5: "b"'''.splitlines()
+messages_ex = '''ababbb
+bababa
+abbbab
+aaabbb
+aaaabbb'''.splitlines()
 
 rules = rules_aoc.splitlines()
 messages = matching_aoc.splitlines()
@@ -29,7 +33,6 @@ def concat_2vals_set(v1, v2):
     else:
         print("pb concat", v1, v2)
         return [v1, v2]
-
 
 
 def pip_2vals_set(v1, v2):
@@ -86,6 +89,7 @@ def constr_values(rules: [str]):
                 repeat = True
                 values[n] = val
                 rules.remove(rule)
+    assert len(rules) == 0
     return values
 
 def count_valids(messages, values, rule):
@@ -94,20 +98,8 @@ def count_valids(messages, values, rule):
         res += message in values[rule]
     return res
 
-ex = '''0: 4 1
-6: 0 5
-1: 2 3 | 3 2
-2: 4 4 | 5 5
-3: 4 5 | 5 4
-4: "a"
-5: "b"'''
-messages_ex = '''ababbb
-bababa
-abbbab
-aaabbb
-aaaabbb'''.splitlines()
 
-vals_ex = constr_values(ex.splitlines())
+vals_ex = constr_values(ex)
 my_utils.print_dict(vals_ex)
 
 print("res ex", count_valids(messages_ex, vals_ex, 6))
