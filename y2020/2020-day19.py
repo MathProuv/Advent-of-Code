@@ -16,45 +16,22 @@ for rule in rules_aoc.splitlines():
 rules = rules_aoc.splitlines()
 messages = matching_aoc.splitlines()
 
-def concat_2vals(v1, v2):
-    #return [v1,v2]
-    if type(v1) == str and type(v2) == str:
-        return v1 + v2
-    elif type(v1) == tuple and type(v2) == tuple:
-        return tuple([concat_2vals(v,w) for v in v1 for w in v2])
-    elif type(v1) == tuple:
-        return tuple([concat_2vals(v, v2) for v in v1])
-    elif type(v2) == tuple:
-        return tuple([concat_2vals(v1, v) for v in v2])
-    else:
-        print("pb concat", v1, v2)
-        return [v1, v2]
+
 def concat_2vals_set(v1, v2):
     if type(v1) == str and type(v2) == str:
         return v1 + v2
     elif type(v1) == set and type(v2) == set:
-        return set([concat_2vals(v,w) for v in v1 for w in v2])
+        return set([concat_2vals_set(v,w) for v in v1 for w in v2])
     elif type(v1) == set:
-        return set([concat_2vals(v, v2) for v in v1])
+        return set([concat_2vals_set(v, v2) for v in v1])
     elif type(v2) == set:
-        return set([concat_2vals(v1, v) for v in v2])
+        return set([concat_2vals_set(v1, v) for v in v2])
     else:
         print("pb concat", v1, v2)
         return [v1, v2]
 
 
 
-def pip_2vals(v1, v2):
-    #return (v1, v2)
-    if type(v1) == str and type(v2) == str:
-        return (v1, v2)
-    elif type(v1) == tuple and type(v2) == tuple:
-        return v1 + v2
-    elif type(v1) == tuple or type(v2) == tuple:
-        return tuple(v1) + tuple(v2)
-    else:
-        print("pb concat", v1, v2)
-        return (v1, v2)
 def pip_2vals_set(v1, v2):
     if type(v1) == str and type(v2) == str:
         return set((v1, v2))
