@@ -10,7 +10,15 @@ ex = '''0: 4 1
 2: 4 4 | 5 5
 3: 4 5 | 5 4
 4: "a"
-5: "b"'''.splitlines()
+5: "b"
+7: 4 5
+14: 7 7
+21: 7 14
+28: 14 14
+8: 7 | 4
+9: 4 | 7
+10: 2 3 | 3 2
+11: 3 2 | 2 3'''.splitlines()
 messages_ex = '''ababbb
 bababa
 abbbab
@@ -40,10 +48,12 @@ def pip_2vals_set(v1, v2):
         return set((v1, v2))
     elif type(v1) == set and type(v2) == set:
         return v1.union(v2)
-    elif type(v1) == set or type(v2) == set:
-        return set(tuple(v1)).union(tuple(v2))
+    elif type(v1) == set and type(v2) == str:
+        return v1.union(set((v2,)))
+    elif type(v1) == str and type(v2) == set:
+        return v2.union(set((v1,)))
     else:
-        print("pb concat", v1, v2)
+        print("pb pipe", v1, v2)
         return (v1, v2)
 
 
@@ -80,6 +90,7 @@ def constr_values(rules: [str]):
     repeat = True
     while repeat:
         repeat = False
+        to_remove = []
         for rule in rules:
             i = rule.index(":")
             n, r = int(rule[:i]), rule[i+2:] #len(": ")
@@ -88,15 +99,14 @@ def constr_values(rules: [str]):
                 # print(rule, val)
                 repeat = True
                 values[n] = val
-                rules.remove(rule)
+                to_remove.append(rule)
+        for to_rem in to_remove:
+            rules.remove(to_rem)
     assert len(rules) == 0
     return values
 
 def count_valids(messages, values, rule):
-    res = 0
-    for message in messages:
-        res += message in values[rule]
-    return res
+    return len(set(messages).intersection(values[rule]))
 
 
 vals_ex = constr_values(ex)
