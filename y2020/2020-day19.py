@@ -105,7 +105,7 @@ def constr_values(rules: [str]):
     assert len(rules) == 0
     return values
 
-def count_valids(messages, values, rule):
+def count_valids(messages, values, rule=0):
     return len(set(messages).intersection(values[rule]))
 
 
@@ -119,3 +119,21 @@ print("nb de possibilités",len(vals[0]))
 
 res1 = count_valids(messages, vals, 0)
 print(res1)
+
+
+def len_rule(rule, values=vals):
+    lres = set()
+    for val in values[rule]:
+        lres.add(len(val))
+    assert(len(lres)) == 1
+    return lres.pop()
+
+
+l0 = len_rule(0)
+l8 = len_rule(8)
+l11 = len_rule(11)
+l42 = len_rule(42)
+l31 = len_rule(31)
+
+print(l0, l8, l11, l42, l31)
+
