@@ -105,11 +105,16 @@ print(res1)
 
 
 class Tile:
+    """Une tuile = une pièce du puzzle"""
     def __init__(self, tile: str):
         all_pixels = tile.splitlines()
         title = all_pixels.pop(0)
-        n, m = len(all_pixels), len(all_pixels[0])
         self.number = re.search(r"Tile (\d+):", title).groups()[0]
+        self.all_pixels = all_pixels
+
+    def summary(self) -> None:
+        """Initialise les bordures et les pixels du centre"""
+        n, m = len(self.all_pixels), len(self.all_pixels[0])
         self.haut = all_pixels[0]
         self.bas = all_pixels[-1]
         gauche, droite = "", ""
@@ -123,15 +128,53 @@ class Tile:
             self.pixels[i] = [" "] * (m-2)
             for j in range(m-2):
                 self.pixels[i][j] = all_pixels[i+1][j+1]
-        
-    def print(self):
-        print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
-        for i in range(len(self.gauche)):
-            print(self.gauche[i], "".join(self.pixels[i]), self.droite[i])
-        print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
+    
+    def get_borders_set(self) -> set(str):
+        res = set()
+        haut = self.all_pixels[0]
+        res.add(haut)
+        res.add(haut[::-1])
+        bas = self.all_pixels[-1]
+        res.add(bas)
+        res.add(bas[::-1])
+        gauche, droite = "", ""
+        for line in self.all_pixels:
+            gauche += line[0]
+            droite += line[-1]
+        res.add(gauche)
+        res.add(gauche[::-1])
+        res.add(droite)
+        res.add(droite[::-1])
+        return res
 
-tile_obj_ex = Tile(tile_ex)
-tile_obj_ex.print()
+    def print(self):
+        my_utils.print_list(self.all_pixels)
+        # print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
+        # for i in range(1, len(self.gauche)-1):
+        #     print(self.gauche[i], "".join(self.pixels[i-1]), self.droite[i])
+        # print("\n"+self.haut[0], "".join(self.haut[1:-1]), self.haut[-1])
+    
+    def flip(self):
+        """symétrie selon l'axe vertical"""
+        for i in range(len(self.all_pixels)):
+            self.all_pixels[i] = self.all_pixels[i][::-1]
+    def flop(self):
+        """symetrie selon l'axe horizontal"""
+        res = []
+        for i in range(len(self.all_pixels))[::-1]:
+            res.append(self.all_pixels[i])
+        self.all_pixels = res
+    def rotate90(self):
+        """rotation d'un quart d'heure"""
+        res = [""] * len(self.all_pixels)
+
+
+class Jigsaw:
+    def __init__(self, tiles: [Tile]):
+        pass
+
+    def coins(self)
+
 
 res2 = 0
 print(res2)
