@@ -18,26 +18,6 @@ tile_ex = """Tile 2797:
 #......#..
 ...######."""
 
-def flip(tile):
-    pixels = tile.splitlines()
-    title = pixels.pop(0)
-    res_pixels = []
-    for line in pixels:
-        res_pixels.append(line[::-1])
-    res = [title]
-    res.extend(res_pixels)
-    return "\n".join(res)
-
-def rotate180(tile):
-    pixels = tile.splitlines()
-    title = pixels.pop(0)
-    res_pixels = []
-    for line in pixels[::-1]:
-        res_pixels.append(line[::-1])
-    res = [title]
-    res.extend(res_pixels)
-    return "\n".join(res)
-
 
 def summary(tile: str) -> dict:
     pixels = tile.splitlines()
@@ -61,23 +41,6 @@ def get_borders(tile: str) -> set:
     for field, val in sommaire.items():
         if field != "number":
             res.append(val)
-    return res
-
-def bords(tiles):
-    frontieres = []
-    res = []
-    for tile in tiles:
-        bordures = get_borders(tile)
-        for bord in bordures:
-            frontieres.append(bord)
-            frontieres.append(bord[::-1])
-    for tile in tiles:
-        sommaire = summary(tile)
-        for field in ["haut", "bas", "gauche", "droite"]:
-            if frontieres.count(sommaire[field]) == 1:
-                res.append(int(sommaire["number"]))
-                break
-    print(len(res))
     return res
 
 def coins(tiles):
@@ -111,10 +74,12 @@ class Tile:
         title = all_pixels.pop(0)
         self.number = re.search(r"Tile (\d+):", title).groups()[0]
         self.all_pixels = all_pixels
+        self.re_init_params()
 
-    def summary(self) -> None:
+    def re_init_params(self) -> None:
         """Initialise les bordures et les pixels du centre"""
         n, m = len(self.all_pixels), len(self.all_pixels[0])
+        self.etat = True
         self.haut = all_pixels[0]
         self.bas = all_pixels[-1]
         gauche, droite = "", ""
@@ -129,22 +94,22 @@ class Tile:
             for j in range(m-2):
                 self.pixels[i][j] = all_pixels[i+1][j+1]
     
-    def get_borders_set(self) -> set(str):
-        res = set()
+    def get_all_borders(self):
+        res = []
         haut = self.all_pixels[0]
-        res.add(haut)
-        res.add(haut[::-1])
+        res.append(haut)
+        res.append(haut[::-1])
         bas = self.all_pixels[-1]
-        res.add(bas)
-        res.add(bas[::-1])
+        res.append(bas)
+        res.append(bas[::-1])
         gauche, droite = "", ""
         for line in self.all_pixels:
             gauche += line[0]
             droite += line[-1]
-        res.add(gauche)
-        res.add(gauche[::-1])
-        res.add(droite)
-        res.add(droite[::-1])
+        res.append(gauche)
+        res.append(gauche[::-1])
+        res.append(droite)
+        res.append(droite[::-1])
         return res
 
     def print(self):
@@ -158,22 +123,54 @@ class Tile:
         """symétrie selon l'axe vertical"""
         for i in range(len(self.all_pixels)):
             self.all_pixels[i] = self.all_pixels[i][::-1]
-    def flop(self):
-        """symetrie selon l'axe horizontal"""
-        res = []
-        for i in range(len(self.all_pixels))[::-1]:
-            res.append(self.all_pixels[i])
-        self.all_pixels = res
+        self.re_init_params()
     def rotate90(self):
         """rotation d'un quart d'heure"""
         res = [""] * len(self.all_pixels)
+        self.re_init_params()
 
+def get_tile(number, tiles):
+    for tile in tiles:
+        if tile[number] == number:
+            return tile
 
 class Jigsaw:
     def __init__(self, tiles: [Tile]):
-        pass
+        self.tiles = tiles
+        self.all_frontieres = []
+        self.numbers = []
+        for tile in self.tiles:
+            self.all_frontieres.extend(tile.get_all_borders())
+            self.numbers.append(tile.number)
 
-    def coins(self)
+
+    def coins(self):
+        res = []
+        for tile in self.tiles:
+            compt = 0
+            bords = [tile.haut, tile.bas, tile.gauche, tile.droite]
+            for bord in bords:
+                if self.all_frontieres.count(bord) == 1:
+                    compt += 1
+            if compt == 2:
+                res.append(tile)
+        return res
+    
+    def bordures(self):
+        res = []
+        for tile in self.tiles:
+            compt = 0
+            bords = [tile.haut, tile.bas, tile.gauche, tile.droite]
+            for bord in bords:
+                if self.all_frontieres.count(bord) == 1:
+                    res.append(tile)
+                    break
+        return res
+
+    def constr(self):
+        res = []
+        ligne = []
+        
 
 
 res2 = 0
