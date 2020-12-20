@@ -2,6 +2,7 @@ import inputAoC as aoc
 import my_utils
 import re
 from math import prod
+import numpy as np
 
 tiles = aoc.get_input_file(20, 2020).split("\n\n")
 
@@ -101,6 +102,36 @@ def coins(tiles):
 bords(tiles)
 res1 = prod(coins(tiles))
 print(res1)
+
+
+class Tile:
+    def __init__(self, tile: str):
+        all_pixels = tile.splitlines()
+        title = all_pixels.pop(0)
+        n, m = len(all_pixels), len(all_pixels[0])
+        self.number = re.search(r"Tile (\d+):", title).groups()[0]
+        self.haut = all_pixels[0]
+        self.bas = all_pixels[-1]
+        gauche, droite = "", ""
+        for ligne in all_pixels:
+            gauche += ligne[0]
+            droite += ligne[-1]
+        self.gauche = gauche
+        self.droite = droite
+        self.pixels = [" "] * (n-2)
+        for i in range(n-2):
+            self.pixels[i] = [" "] * (m-2)
+            for j in range(m-2):
+                self.pixels[i][j] = all_pixels[i+1][j+1]
+        
+    def print(self):
+        print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
+        for i in range(len(self.gauche)):
+            print(self.gauche[i], "".join(self.pixels[i]), self.droite[i])
+        print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
+
+tile_obj_ex = Tile(tile_ex)
+tile_obj_ex.print()
 
 res2 = 0
 print(res2)
