@@ -120,20 +120,20 @@ res1 = count_valids(messages, vals, 0)
 print(res1)
 
 
-def len_rule(rule, values=vals):
+##### Partie 2 #####
+
+"""def len_rule(rule, values=vals):
     lres = set()
     for val in values[rule]:
         lres.add(len(val))
     assert(len(lres)) == 1
     return lres.pop()
 
-
 l0 = len_rule(0)
 l8 = len_rule(8)
-l11 = len_rule(11)
 l42 = len_rule(42)
 l31 = len_rule(31)
-# print(l0, l8, l11, l42, l31)
+print(l0, l8, l42, l31)"""
 
 # Un message de rule0 est de la forme : 8 11 = 42 42 31 (tous trois de taille 8)
 # On devrait maintenant accepter :  (42)+ (31)+ avec nb(42) > nb(31)
@@ -151,9 +151,13 @@ def is_11s(message, values=vals):
 
 def is_valid(message, values=vals):
     """On introduit les règles 8bis: 42 | 42 8 et 11bis: 42 31 | 42 11 31
-    Maintenant, la règle 0 est : (42)+ (31)+, avec strictement plus de 41 que de 31"""
+
+    La règle 0 étant 8 11, elle est maintenant: 
+    (42)+ (31)+, avec strictement plus de 41 que de 31"""
+
     n = len(message)
-    if n % 8 : return False
+    if n % 8 :
+        return False
     n //= 8 # le nombre de blocs
 
     if n <= 3:
@@ -162,17 +166,18 @@ def is_valid(message, values=vals):
     deb = True
     c42 = 0
     for k in range(n-1):
-        if deb:
+        if deb: #on regarde les 42
             if not is_in_rule(message[8*k: 8*k+8], 42):
+                # on n'a plus de 42, donc il faut regarder les 31
                 deb = False
-                if c42 < n/2:
+                if c42 <= n/2:  #nb(42) > nb(31)
                     return False
             c42 += 1
-        if not deb:
+        if not deb: #on regarde les 31. /!\ pas else
             if not is_in_rule(message[8*k: 8*k+8], 31):
                 return False
     
-    return is_in_rule(message[-8:], 31)
+    return is_in_rule(message[-8:], 31) # il faut terminer par un 31
 
 def count_valid2(messages: [str], values=vals):
     res = 0
@@ -183,5 +188,3 @@ def count_valid2(messages: [str], values=vals):
 
 res2 = count_valid2(messages, vals)
 print(res2)
-
-### 220 < res2 < 275
