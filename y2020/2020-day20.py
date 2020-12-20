@@ -59,10 +59,10 @@ def coins(tiles):
                 compt += 1
         if compt == 2:
             res.append(int(sommaire["number"]))
-    print(len(res))
+    assert len(res) == 4
     return res
 
-bords(tiles)
+
 res1 = prod(coins(tiles))
 print(res1)
 
@@ -127,12 +127,18 @@ class Tile:
     def rotate90(self):
         """rotation d'un quart d'heure"""
         res = [""] * len(self.all_pixels)
+        for i in range(len(res)):
+            res[i] = 
         self.re_init_params()
+    
+    def is_next(self, tile2):
+        borders_2 = tile2.get_all_borders()
+        for bord in [self.haut, self.bas, self.gauche, self.droite]:
+            if bord in borders_2:
+                return True
+        return False
 
-def get_tile(number, tiles):
-    for tile in tiles:
-        if tile[number] == number:
-            return tile
+
 
 class Jigsaw:
     def __init__(self, tiles: [Tile]):
@@ -142,6 +148,11 @@ class Jigsaw:
         for tile in self.tiles:
             self.all_frontieres.extend(tile.get_all_borders())
             self.numbers.append(tile.number)
+    
+    def get_tile(self, number):
+        for tile in self.tiles:
+            if tile[number] == number:
+                return tile
 
 
     def coins(self):
@@ -168,9 +179,37 @@ class Jigsaw:
         return res
 
     def constr(self):
+        numbers = self.numbers[::]
         res = []
         ligne = []
-        
+        debut = self.coins().pop()
+        while self.all_frontieres.count(debut.gauche) != 1 and self.all_frontieres.count(debut.droite) != 1:
+            debut.rotate()
+        ligne.append(debut)
+        numbers.remove(debut["number"])
+        while numbers:
+            break
+            # trouver la tuile à sa droite
+            # l'orienter 
+            # l'ajouter à la ligne 
+            # si c'est une pièce du bord:
+            #    ajouter la ligne 
+            
+        # coller toutes les pièces
+        # retourner le résultat
+
+    def count_roughness(self):
+        pass
+        # tant qu'on a 0 monstre:
+        #     ré-orienter
+        # 
+        # faire une copie de l'image avec des 0 pour chaque '.' et des 1 pour chaque "#"
+        # pour chaque endroit qui peut être le coin sup gauche du monstre:
+        #    tester si c'est le monstre
+        #       si c'est le monstre:
+        #           à chaque case du monstre, mettre 0 dans la copie
+        # retourner la somme de la copie
+
 
 
 res2 = 0
