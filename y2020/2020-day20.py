@@ -4,7 +4,7 @@ import re
 from math import prod
 import numpy as np
 
-tiles = aoc.get_input_file(20, 2020).split("\n\n")
+tiles_text = aoc.get_input_file(20, 2020).split("\n\n")
 
 tile_ex = """Tile 2797:
 .#...#...#
@@ -63,7 +63,7 @@ def coins(tiles):
     return res
 
 
-res1 = prod(coins(tiles))
+res1 = prod(coins(tiles_text))
 print(res1)
 
 
@@ -80,10 +80,10 @@ class Tile:
         """Initialise les bordures et les pixels du centre"""
         n, m = len(self.all_pixels), len(self.all_pixels[0])
         self.etat = True
-        self.haut = all_pixels[0]
-        self.bas = all_pixels[-1]
+        self.haut = self.all_pixels[0]
+        self.bas = self.all_pixels[-1]
         gauche, droite = "", ""
-        for ligne in all_pixels:
+        for ligne in self.all_pixels:
             gauche += ligne[0]
             droite += ligne[-1]
         self.gauche = gauche
@@ -92,7 +92,7 @@ class Tile:
         for i in range(n-2):
             self.pixels[i] = [" "] * (m-2)
             for j in range(m-2):
-                self.pixels[i][j] = all_pixels[i+1][j+1]
+                self.pixels[i][j] = self.all_pixels[i+1][j+1]
     
     def get_all_borders(self):
         res = []
@@ -111,13 +111,23 @@ class Tile:
         res.append(droite)
         res.append(droite[::-1])
         return res
+    
+    def get_attribut(self, orientation):
+        if orientation == "gauche": return self.gauche
+        elif orientation == "droite": return self.droite
+        elif orientation == "haut": return self.haut
+        elif orientation == "bas": return self.bas
+        else: raise TypeError
 
     def print(self):
         my_utils.print_list(self.all_pixels)
-        # print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
-        # for i in range(1, len(self.gauche)-1):
-        #     print(self.gauche[i], "".join(self.pixels[i-1]), self.droite[i])
-        # print("\n"+self.haut[0], "".join(self.haut[1:-1]), self.haut[-1])
+    
+    def print_frontiere(self):
+        """affiche la tuile avec une ligne ou colonne vide entre la tuile et ses frontières"""
+        print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
+        for i in range(1, len(self.gauche)-1):
+            print(self.gauche[i], "".join(self.pixels[i-1]), self.droite[i])
+        print("\n"+self.haut[0], "".join(self.haut[1:-1]), self.haut[-1])
     
     def flip(self):
         """symétrie selon l'axe vertical"""
@@ -128,16 +138,23 @@ class Tile:
         """rotation d'un quart d'heure"""
         res = [""] * len(self.all_pixels)
         for i in range(len(res)):
-            res[i] = 
+            res[i] = "".join([line[i] for line in self.all_pixels])[::-1]
         self.re_init_params()
     
-    def is_next(self, tile2):
+    def is_near(self, tile2):
         borders_2 = tile2.get_all_borders()
         for bord in [self.haut, self.bas, self.gauche, self.droite]:
             if bord in borders_2:
                 return True
         return False
 
+    def orientate(self, frontiere, orientation="gauche"):
+        assert frontiere in self.get_all_borders()
+        
+
+
+
+tiles = [Tile(tile) for tile in tiles_text]
 
 
 class Jigsaw:
