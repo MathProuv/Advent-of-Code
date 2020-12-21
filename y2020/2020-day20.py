@@ -238,24 +238,27 @@ tiles = [Tile(tile) for tile in tiles_text]
 puzzle = Jigsaw(tiles)
 puzzle.constr()
 
-this_tile = tiles[0]
-voisins = []
-for tile in tiles[1:]:
-    if tile.is_near(this_tile):
-        voisins.append(tile)
-for tile in voisins:
-    if this_tile.bas in tile.get_all_borders():
-        tile_bas = tile
-for tile in voisins:
-    if this_tile.haut in tile.get_all_borders():
-        tile_haut = tile
 
-tile_haut.orientate(this_tile.haut, "bas")
-tile_haut.print()
+def test1():
+    this_tile = tiles[0]
+    voisins = []
+    for tile in tiles[1:]:
+        if tile.is_near(this_tile):
+            voisins.append(tile)
+    for tile in voisins:
+        if this_tile.bas in tile.get_all_borders():
+            tile_bas = tile
+    for tile in voisins:
+        if this_tile.haut in tile.get_all_borders():
+            tile_haut = tile
 
-this_tile.print()
-tile_bas.orientate(this_tile.bas, "haut")
-tile_bas.print()
+    tile_haut.orientate(this_tile.haut, "bas")
+    tile_haut.print()
+
+    this_tile.print()
+    tile_bas.orientate(this_tile.bas, "haut")
+    tile_bas.print()
+test1()
 
 res2 = 0
 print(res2)
