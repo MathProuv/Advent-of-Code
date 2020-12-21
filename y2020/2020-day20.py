@@ -139,6 +139,7 @@ class Tile:
         res = [""] * len(self.all_pixels)
         for i in range(len(res)):
             res[i] = "".join([line[i] for line in self.all_pixels])[::-1]
+        self.all_pixels = res
         self.re_init_params()
     
     def is_near(self, tile2):
@@ -153,19 +154,11 @@ class Tile:
         for i in range(8):
             if frontiere == self.get_attribut(orientation):
                 break
-            elif i&1: self.rotate90()
-            else: self.flip()
+            elif i==4: self.flip()
+            self.rotate90()
         assert frontiere == self.get_attribut(orientation)
 
 
-
-tiles = [Tile(tile) for tile in tiles_text]
-puzzle = Jigsaw(tiles)
-
-this_tile = tiles[0]
-for tile in tiles[0]:
-    if tile.is_near(this_tile):
-        print(tile, this_tile)
 
 class Jigsaw:
     def __init__(self, tiles: [Tile]):
@@ -213,7 +206,7 @@ class Jigsaw:
         while self.all_frontieres.count(debut.gauche) != 1 and self.all_frontieres.count(debut.droite) != 1:
             debut.rotate()
         ligne.append(debut)
-        numbers.remove(debut["number"])
+        numbers.remove(debut.number)
         while numbers:
             break
             # trouver la tuile à sa droite
@@ -224,6 +217,7 @@ class Jigsaw:
             
         # coller toutes les pièces
         # retourner le résultat
+        debut.print()
 
     def count_roughness(self):
         pass
@@ -238,6 +232,30 @@ class Jigsaw:
         # retourner la somme de la copie
 
 
+
+
+tiles = [Tile(tile) for tile in tiles_text]
+puzzle = Jigsaw(tiles)
+puzzle.constr()
+
+this_tile = tiles[0]
+voisins = []
+for tile in tiles[1:]:
+    if tile.is_near(this_tile):
+        voisins.append(tile)
+for tile in voisins:
+    if this_tile.bas in tile.get_all_borders():
+        tile_bas = tile
+for tile in voisins:
+    if this_tile.haut in tile.get_all_borders():
+        tile_haut = tile
+
+tile_haut.orientate(this_tile.haut, "bas")
+tile_haut.print()
+
+this_tile.print()
+tile_bas.orientate(this_tile.bas, "haut")
+tile_bas.print()
 
 res2 = 0
 print(res2)
