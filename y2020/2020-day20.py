@@ -150,12 +150,22 @@ class Tile:
 
     def orientate(self, frontiere, orientation="gauche"):
         assert frontiere in self.get_all_borders()
-        
+        for i in range(8):
+            if frontiere == self.get_attribut(orientation):
+                break
+            elif i&1: self.rotate90()
+            else: self.flip()
+        assert frontiere == self.get_attribut(orientation)
 
 
 
 tiles = [Tile(tile) for tile in tiles_text]
+puzzle = Jigsaw(tiles)
 
+this_tile = tiles[0]
+for tile in tiles[0]:
+    if tile.is_near(this_tile):
+        print(tile, this_tile)
 
 class Jigsaw:
     def __init__(self, tiles: [Tile]):
