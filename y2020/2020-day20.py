@@ -93,6 +93,7 @@ class Tile:
             self.pixels[i] = [" "] * (m-2)
             for j in range(m-2):
                 self.pixels[i][j] = self.all_pixels[i+1][j+1]
+            self.pixels[i] = "".join(self.pixels[i])
     
     def get_all_borders(self):
         res = []
@@ -112,11 +113,13 @@ class Tile:
         res.append(droite[::-1])
         return res
     
-    def get_attribut(self, orientation):
-        if orientation == "gauche": return self.gauche
-        elif orientation == "droite": return self.droite
-        elif orientation == "haut": return self.haut
-        elif orientation == "bas": return self.bas
+    def get_attribut(self, attribut):
+        if attribut == "gauche": return self.gauche
+        elif attribut == "droite": return self.droite
+        elif attribut == "haut": return self.haut
+        elif attribut == "bas": return self.bas
+        elif attribut == "all_pixels": return self.all_pixels
+        elif attribut == "pixels": return self.pixels
         else: raise TypeError
 
     def print(self):
@@ -171,7 +174,7 @@ class Jigsaw:
             self.all_frontieres.extend(tile.get_all_borders())
             self.numbers.append(tile.number)
     
-    def get_tile(self, number) -> Tile:
+    def get_tile_by_number(self, number) -> Tile:
         for tile in self.tiles:
             if tile[number] == number:
                 return tile
@@ -190,6 +193,7 @@ class Jigsaw:
         return res
     
     def bordures(self) -> [Tile]:
+        """Fonction inutile (dans mon code) qui retourne une liste des tuiles en bordure"""
         res = []
         for tile in self.tiles:
             compt = 0
@@ -244,11 +248,9 @@ class Jigsaw:
                 
                 #en fin de ligne, on l'avait déjà enlevé
                 self.tiles.remove(voisin)
-        
-            
-        # coller toutes les pièces
-        # retourner le résultat
+
         self.raw_image = res
+        self.decoded_image = self.decode_image()
         return res
 
 
@@ -257,6 +259,31 @@ class Jigsaw:
             if front in tile2.get_all_borders():
                 return tile2
 
+
+    def decode_image(self, with_frontiere=False) -> [str]:
+        res = [""]
+        attribut = "pixels" if not with_frontiere else "all_pixels"
+
+        for big_line in self.raw_image: # big_line: [Tile]
+            for i in range(len(big_line[0].get_attribut(attribut))):
+                little_line = ""
+
+                for tuile in big_line:
+                    if with_frontiere: 
+                        little_line += tuile.all_pixels[i]
+                        little_line += "  "
+                    else:
+                        little_line += tuile.pixels[i]
+                        
+                res.append(little_line)
+            if with_frontiere: res.append(" ")
+
+        return res
+
+    def print(self, with_frontiere=False):
+        try: self.raw_image
+        except AttributeError: self.constr()
+        my_utils.print_list(self.decode_image(with_frontiere))
 
     def count_roughness(self):
         pass
@@ -275,8 +302,9 @@ class Jigsaw:
 
 tiles = [Tile(tile) for tile in tiles_text]
 puzzle = Jigsaw(tiles)
-puzzle.constr()
-
+#puzzle.constr()
+puzzle.print(True)
+my_utils.print_list(puzzle.decoded_image)
 
 def test1():
     this_tile = tiles[0]
