@@ -173,6 +173,7 @@ class Jigsaw:
         for tile in self.tiles:
             self.all_frontieres.extend(tile.get_all_borders())
             self.numbers.append(tile.number)
+        self.constr()
     
     def get_tile_by_number(self, number) -> Tile:
         for tile in self.tiles:
@@ -281,8 +282,6 @@ class Jigsaw:
         return res
 
     def print(self, with_frontiere=False):
-        try: self.raw_image
-        except AttributeError: self.constr()
         my_utils.print_list(self.decode_image(with_frontiere))
 
     def count_roughness(self):
@@ -302,7 +301,6 @@ class Jigsaw:
 
 tiles = [Tile(tile) for tile in tiles_text]
 puzzle = Jigsaw(tiles)
-#puzzle.constr()
 puzzle.print(True)
 my_utils.print_list(puzzle.decoded_image)
 
