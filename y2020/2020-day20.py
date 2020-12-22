@@ -142,20 +142,22 @@ class Tile:
         self.all_pixels = res
         self.re_init_params()
     
-    def is_near(self, tile2):
+    def near_frontiere(self, tile2):
+        """Retourne la frontière en commun ou None"""
         borders_2 = tile2.get_all_borders()
         for bord in [self.haut, self.bas, self.gauche, self.droite]:
             if bord in borders_2:
-                return True
-        return False
+                return bord
+        return None
 
     def orientate(self, frontiere, orientation="gauche"):
         assert frontiere in self.get_all_borders()
-        for i in range(8):
+        for i in range(16):
             if frontiere == self.get_attribut(orientation):
                 break
-            elif i==4: self.flip()
+            elif i==4 or i==12: self.flip()
             self.rotate90()
+            if i==8: self.flip()
         assert frontiere == self.get_attribut(orientation)
 
 
@@ -169,13 +171,13 @@ class Jigsaw:
             self.all_frontieres.extend(tile.get_all_borders())
             self.numbers.append(tile.number)
     
-    def get_tile(self, number):
+    def get_tile(self, number) -> Tile:
         for tile in self.tiles:
             if tile[number] == number:
                 return tile
 
 
-    def coins(self):
+    def coins(self) -> [Tile]:
         res = []
         for tile in self.tiles:
             compt = 0
@@ -187,7 +189,7 @@ class Jigsaw:
                 res.append(tile)
         return res
     
-    def bordures(self):
+    def bordures(self) -> [Tiles]:
         res = []
         for tile in self.tiles:
             compt = 0
@@ -199,25 +201,58 @@ class Jigsaw:
         return res
 
     def constr(self):
-        numbers = self.numbers[::]
+        all_coins = self.coins()
+        all_bordures = self.bordures()
         res = []
         ligne = []
-        debut = self.coins().pop()
-        while self.all_frontieres.count(debut.gauche) != 1 and self.all_frontieres.count(debut.droite) != 1:
-            debut.rotate()
-        ligne.append(debut)
-        numbers.remove(debut.number)
-        while numbers:
-            break
+        tuile = all_coins.pop()
+        self.tiles.remove(tuile)
+        while self.all_frontieres.count(tuile.gauche) != 1 and self.all_frontieres.count(tuile.haut) != 1:
+            tuile.rotate()
+        front = tuile.droite
+        orientation = "gauche"
+        bord = True
+        ligne.append(tuile)
+        while self.tiles:
             # trouver la tuile à sa droite
+            voisin = self.find_good_voisin(tuile, front)
             # l'orienter 
-            # l'ajouter à la ligne 
-            # si c'est une pièce du bord:
-            #    ajouter la ligne 
+            voisin.orientate(front, orientation)
+            # l'ajouter à la ligne
+            ligne.append(voisin)
+
+            # determiner si on est en fin de ligne
+            if bord:
+                fin_de_ligne = tuile in all_coins
+            else:
+                fin_de_ligne = tuile in all_bordures
+
+            # en fonction de si c'est une fin de ligne:
+            # determiner la piece dont il faut trouver le voisin
+            # en connaissant sa frontière et son orientation
+            # et determiner si on est au bord 
+            if fin_de_ligne:
+                debut = ligne[0]
+                front = debut.bas
+                orientation = "haut"
+                bord = False
+            else:
+                debut = voisin
+                front = debut.droite
+                orientation = "gauche"
+                
+
+            self.tiles.remove(voisin)
             
         # coller toutes les pièces
         # retourner le résultat
-        debut.print()
+        print(res)
+
+
+    def find_good_voisin(self, tile: Tile, front: str) -> Tile:
+        for tile2 in self.tiles:
+            if front in tile2.get_all_borders():
+                return tile2
 
     def count_roughness(self):
         pass
@@ -243,7 +278,7 @@ def test1():
     this_tile = tiles[0]
     voisins = []
     for tile in tiles[1:]:
-        if tile.is_near(this_tile):
+        if tile.near_frontiere(this_tile):
             voisins.append(tile)
     for tile in voisins:
         if this_tile.bas in tile.get_all_borders():
@@ -258,7 +293,7 @@ def test1():
     this_tile.print()
     tile_bas.orientate(this_tile.bas, "haut")
     tile_bas.print()
-test1()
+# test1()
 
 res2 = 0
 print(res2)
