@@ -29,7 +29,7 @@ class Deck:
         last_card = self.deck.pop()
         return self.score(indice + 1, init + last_card * indice)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.deck)
 
 def test_score():
@@ -41,24 +41,21 @@ def test_score():
 
 class Combat:
     """Objet qui consiste en un jeu de Combat itératif"""
+
     def __init__(self, deck1, deck2):
         self.deck1 = Deck(deck1) if type(deck1) != Deck else deck1
         self.deck2 = Deck(deck2) if type(deck2) != Deck else deck1
     
-    def game(self):
+    def game(self) -> int:
         while self.deck1.is_playable() and self.deck2.is_playable():
             card1 = self.deck1.play()
             card2 = self.deck2.play()
             gagnant = self.deck1 if card1 > card2 else self.deck2
             gagnant.win(card1, card2)
-        return self.resultat()
-    
-    def resultat(self):
-        assert not self.deck1.is_playable() or not self.deck2.is_playable()
+        
         gagnant = self.deck1 if not self.deck2.is_playable() else self.deck2
-        # print("Le jeu gagnant est :", gagnant)
         score = gagnant.score()
-        # print("Le score est :", score)
+        # print("Le jeu gagnant est :", winner, "et son score est", score)
         return score
 
 
@@ -66,3 +63,48 @@ this_game = Combat(deck1, deck2)
 res1 = this_game.game()
 print(res1)
 
+
+class CombatRec:
+    """Objet qui consiste en un jeu de Combat récursif"""
+
+    def __init__(self, deck1, deck2):
+        self.deck1 = Deck(deck1) if type(deck1) != Deck else deck1
+        self.deck2 = Deck(deck2) if type(deck2) != Deck else deck1
+        self.configs = []
+
+    def game(self):
+        jeu_infini = False
+        while not jeu_infini and self.deck1.is_playable() and self.deck2.is_playable():
+            card1 = self.deck1.play()
+            card2 = self.deck2.play()
+
+            gagnant, card1, card2 = self.sub_game(card1, card2, self.deck1, self.deck2)
+            gagnant.win(card1, card2)
+
+            config = (tuple(self.deck1.deck), tuple(self.deck2.deck))
+            
+            if config in self.configs:
+                jeu_infini = True
+                grand_gagnant = deck1
+            self.configs.append(config)
+        
+        if not jeu_infini: #on n'est pas arrivé sur un jeu infini
+            assert not self.deck1.is_playable() or not self.deck2.is_playable()
+            grand_gagnant = self.deck1 if not self.deck2.is_playable() else self.deck2
+
+
+        score = grand_gagnant.score()
+        # print("Le jeu gagnant est :", winner, "et son score est", score)
+        return score
+    
+    def sub_game(self, card1: int, card2: int, deck1: Deck, deck2: Deck) -> (Deck, int, int):
+        gagnant = deck1 if card1 > card2 else deck2
+
+        if gagnant != deck1: # on remet les cartes dans l'ordre
+            card1, card2 = card2, card1
+        
+        return gagnant, card1, card2
+
+this_game_rec = CombatRec(deck1, deck2)
+res2 = this_game_rec.game()
+print(res2)
