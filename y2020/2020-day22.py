@@ -23,7 +23,7 @@ class Deck:
             card1, card2 = card2, card1"""
         self.deck.append(card1)
         self.deck.append(card2)
-    
+
     def score(self, indice=1, init=0) -> int:
         if len(self.deck) == 0: return init
         last_card = self.deck.pop()
@@ -31,6 +31,7 @@ class Deck:
     
     def __repr__(self) -> str:
         return str(self.deck)
+
 
 def test_score():
     ex = Deck([3, 2, 10, 6, 8, 5, 9, 4, 7, 1])
@@ -47,6 +48,7 @@ class Combat:
         self.deck1 = Deck(deck1) if type(deck1) != Deck else deck1
         self.deck2 = Deck(deck2) if type(deck2) != Deck else deck1
     
+
     def game(self) -> Deck:
         while self.deck1.is_playable() and self.deck2.is_playable():
             card1 = self.deck1.play()
@@ -58,6 +60,7 @@ class Combat:
         
         gagnant = self.deck1 if not self.deck2.is_playable() else self.deck2
         return gagnant
+
     
     def resultat(self) -> int:
         gagnant = self.game()
@@ -65,6 +68,7 @@ class Combat:
         score = gagnant.score()
         # print("et son score est", score)
         return score
+
 
 def test1():
     deck1_1 = [9, 2, 6, 3, 1]
@@ -87,7 +91,7 @@ class CombatRec:
         self.deck1 = Deck(deck1) if type(deck1) != Deck else deck1
         self.deck2 = Deck(deck2) if type(deck2) != Deck else deck1
         self.configs = []
-        self.is_sous_game = is_sous_game
+        self.is_sous_game = is_sous_game # inutile, sauf pour la doc de sub_game
 
 
     def game(self) -> str:
@@ -132,6 +136,7 @@ class CombatRec:
 
         return gagnant, card1, card2
     
+
     def resultat(self) -> int:
         gagnant = self.game()
         deck_gagnant = self.deck1 if gagnant == "deck1" else self.deck2
@@ -139,6 +144,7 @@ class CombatRec:
         score = deck_gagnant.score()
         # print("et son score est", score)
         return score
+
 
 def test_2():
     deck1_2 = [9, 2, 6, 3, 1]
