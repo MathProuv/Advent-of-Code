@@ -98,6 +98,9 @@ class CombatRec:
         return score
     
     def sub_game(self, card1: int, card2: int, deck1: Deck, deck2: Deck) -> (Deck, int, int):
+        if len(deck1.deck) >= card1 and len(deck2.deck) >= card2:
+            print("Il faut un sous-game")
+
         gagnant = deck1 if card1 > card2 else deck2
 
         if gagnant != deck1: # on remet les cartes dans l'ordre
