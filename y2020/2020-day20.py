@@ -189,7 +189,7 @@ class Jigsaw:
                 res.append(tile)
         return res
     
-    def bordures(self) -> [Tiles]:
+    def bordures(self) -> [Tile]:
         res = []
         for tile in self.tiles:
             compt = 0
@@ -202,57 +202,61 @@ class Jigsaw:
 
     def constr(self):
         all_coins = self.coins()
-        all_bordures = self.bordures()
         res = []
         ligne = []
+
         tuile = all_coins.pop()
         self.tiles.remove(tuile)
-        while self.all_frontieres.count(tuile.gauche) != 1 and self.all_frontieres.count(tuile.haut) != 1:
-            tuile.rotate()
-        front = tuile.droite
+        while self.all_frontieres.count(tuile.droite) <= 1 or self.all_frontieres.count(tuile.bas) <= 1:
+            tuile.rotate90()
+
+        common_frontiere = tuile.droite
         orientation = "gauche"
-        bord = True
         ligne.append(tuile)
+        
         while self.tiles:
-            # trouver la tuile à sa droite
-            voisin = self.find_good_voisin(tuile, front)
-            # l'orienter 
-            voisin.orientate(front, orientation)
-            # l'ajouter à la ligne
-            ligne.append(voisin)
+            # trouver la tuile suivante (qui partage la frontière)
+            voisin = self.find_good_voisin(tuile, common_frontiere)
+            # print(tuile.number, orientation)
 
-            # determiner si on est en fin de ligne
-            if bord:
-                fin_de_ligne = tuile in all_coins
-            else:
-                fin_de_ligne = tuile in all_bordures
-
-            # en fonction de si c'est une fin de ligne:
-            # determiner la piece dont il faut trouver le voisin
+            # S'il n'y a pas de tuile voisine, on est en fin de ligne
+            # En fonction de cela, on doit
+            # determiner la piece dont il faudra trouver le voisin
             # en connaissant sa frontière et son orientation
-            # et determiner si on est au bord 
-            if fin_de_ligne:
-                debut = ligne[0]
-                front = debut.bas
+
+            if not voisin:
+                # fin_de_ligne = True
+
+                tuile = ligne[0]
+                common_frontiere = tuile.bas
                 orientation = "haut"
-                bord = False
+                res.append(ligne)
+                ligne = []
+
             else:
-                debut = voisin
-                front = debut.droite
+                # fin_de_ligne = False
+                voisin.orientate(common_frontiere, orientation)
+                ligne.append(voisin)
+                
+                tuile = voisin
+                common_frontiere = tuile.droite
                 orientation = "gauche"
                 
-
-            self.tiles.remove(voisin)
+                #en fin de ligne, on l'avait déjà enlevé
+                self.tiles.remove(voisin)
+        
             
         # coller toutes les pièces
         # retourner le résultat
-        print(res)
+        self.raw_image = res
+        return res
 
 
     def find_good_voisin(self, tile: Tile, front: str) -> Tile:
         for tile2 in self.tiles:
             if front in tile2.get_all_borders():
                 return tile2
+
 
     def count_roughness(self):
         pass
