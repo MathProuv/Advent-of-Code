@@ -209,8 +209,10 @@ class Jigsaw:
         all_coins = self.coins()
         res = []
         ligne = []
+        tiles_backup = []
 
         tuile = all_coins.pop()
+        tiles_backup.append(tuile)
         self.tiles.remove(tuile)
         while self.all_frontieres.count(tuile.droite) <= 1 or self.all_frontieres.count(tuile.bas) <= 1:
             tuile.rotate90()
@@ -249,7 +251,9 @@ class Jigsaw:
                 
                 #en fin de ligne, on l'avait déjà enlevé
                 self.tiles.remove(voisin)
+                tiles_backup.append(voisin)
 
+        self.tiles = tiles_backup
         self.raw_image = res
         self.decoded_image = self.decode_image()
         return res
@@ -270,11 +274,8 @@ class Jigsaw:
                 little_line = ""
 
                 for tuile in big_line:
-                    if with_frontiere: 
-                        little_line += tuile.all_pixels[i]
-                        little_line += "  "
-                    else:
-                        little_line += tuile.pixels[i]
+                    little_line += tuile.get_attribut(attribut)[i]
+                    if with_frontiere: little_line += "  "
                         
                 res.append(little_line)
             if with_frontiere: res.append(" ")
