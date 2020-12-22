@@ -7,7 +7,7 @@ deck2 = [int(card) for card in initial_decks[1].splitlines()[1:]]
 
 class Deck:
     """Objet qui représente une p(f)ile de cartes"""
-    def __init__(self, initial_deck: [int]) -> Deck:
+    def __init__(self, initial_deck: [int]):
         self.deck = deque(initial_deck)
     
     def play(self) -> int:
