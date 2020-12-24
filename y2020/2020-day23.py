@@ -1,15 +1,13 @@
 import inputAoC as aoc
 from collections import deque
 
-MOVES = 10000000
-PICK = 3
 
 cups = [int(cup) for cup in aoc.get_input_file(23, 2020)]
 cups_ex = [3, 8, 9, 1, 2, 5, 4, 6, 7]
 
 
 class Cups:
-    PICK = 3
+    NB_PICKS = 3
 
     def __init__(self, cups, MAX=-1):
         self.cups = [int(cup) for cup in cups]
@@ -25,7 +23,7 @@ class Cups:
         cup = self.cups[turn]
 
         pick_up = []
-        for pick in range(self.PICK):
+        for pick in range(self.NB_PICKS):
             try:
                 pick_up.append(self.cups.pop(turn+1))
             except IndexError: # circulaire
@@ -38,7 +36,7 @@ class Cups:
             if dest == 0: dest = self.MAX
 
         index = self.cups.index(dest) + 1
-        for i in range(index, index+self.PICK):
+        for i in range(index, index+self.NB_PICKS):
             self.cups.insert(i, pick_up.pop(0))
         
         # le début doit se retrouver à la fin
@@ -75,11 +73,11 @@ cups2_ex = Cups(cups_ex)
 cups2_ex.moves(10, True)
 
 
+
 cups1 = Cups(cups)
 cups1.moves(100)
 res1 = cups1.score()
 print(res1)
-
 
 
 cups2 = Cups(cups, 1000000)
