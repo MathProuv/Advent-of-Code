@@ -1,0 +1,2 @@
+import inputAoC as aoc
+
