@@ -100,21 +100,16 @@ class Cups:
 
     
     def score(self):
-        i = self.node
-        while i.val != 1:
-            i = i.next
+        i = self.nodes[1].next
         res = ""
-        i = i.next
         while i.val != 1:
             res += str(i.val)
             i = i.next
         return res
     
     def score_2(self):
-        i = self.node
-        while i.val != 1:
-            i = i.next
-        return i.next.val * i.next.next.val
+        i = self.nodes[1].next
+        return i.val * i.next.val
 
 cups2_ex = Cups(cups_ex)
 cups2_ex.moves(10, True)
