@@ -32,7 +32,16 @@ def get_neighbors(grid):
                 res[z][y][x] = get_pixel_neighbors(grid, x, y, z)
     return res
 
-agrandir_grid = my_utils.agrandir_grid
+def agrandir_grid(grid, n=1):
+    res = [0] * (len(grid) + 2*n)
+    for z in range(len(res)):
+        res[z] = [0] * (len(grid[0]) + 2*n)
+        for y in range(len(res[z])):
+            if n <= z < len(grid)+n and n <= y < len(grid[z-n])+n:
+                res[z][y] = '.' * n + grid[z-n][y-n] + '.' * n
+            else:
+                res[z][y] = '.' * (len(grid[0][0]) + 2*n)
+    return res
 
 def turn_pixel(pixel, neighbors):
     if neighbors == 3 or (neighbors == 2 and pixel == "#"):
