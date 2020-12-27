@@ -32,16 +32,7 @@ def get_neighbors(grid):
                 res[z][y][x] = get_pixel_neighbors(grid, x, y, z)
     return res
 
-def agrandir_grid(grid,n=1):
-    res = [0] * (len(grid) + 2*n)
-    for z in range(len(res)):
-        res[z] = [0] * (len(grid[0]) + 2*n)
-        for y in range(len(res[z])):
-            if n <= z < len(grid)+n and n <= y < len(grid[z-n])+n:
-                res[z][y] = '.' * n + grid[z-n][y-n] + '.' * n
-            else:
-                res[z][y] = '.' * (len(grid[0][0]) + 2*n)
-    return res
+agrandir_grid = my_utils.agrandir_grid
 
 def turn_pixel(pixel, neighbors):
     if neighbors == 3 or (neighbors == 2 and pixel == "#"):
@@ -50,7 +41,7 @@ def turn_pixel(pixel, neighbors):
         return "."
 
 def turn(grid):
-    grid = agrandir_grid(grid)
+    grid = my_utils.agrandir_grid(grid)
     voisins = get_neighbors(grid)
     res = ['.'] * len(grid)
     for z in range(len(grid)):
@@ -75,23 +66,7 @@ def count_active(grid):
     return res
 
 
-grid = [start.splitlines()]
-
-"""grid_ex = [ex.splitlines()]
-my_utils.print_list(grid_ex)
-after_1turn = turn(grid_ex)
-my_utils.print_list(after_1turn)
-print("ex 3D", count_active(turns(grid_ex,6)))"""
-
-after_6turns = turns(grid,6)
-
-res1 = count_active(after_6turns)
-print(res1)
-
-
-#########
-
-
+# Passage en 4D
 
 def get_pixel_neighbors4D(grid, x,y,z,w):
     res = 0
@@ -110,7 +85,6 @@ def get_pixel_neighbors4D(grid, x,y,z,w):
                     if not( i==x and j==y and k==z and l==w):
                         res += grid[l][k][j][i]=="#"
     return res
-
 
 def get_neighbors4D(grid4D):
     res = [0] * len(grid4D)
@@ -159,6 +133,20 @@ def count_active4D(grid):
     return res
 
 # turns4D = turns(.,.,turn4D)
+
+
+grid = [start.splitlines()]
+
+"""grid_ex = [ex.splitlines()]
+my_utils.print_list(grid_ex)
+after_1turn = turn(grid_ex)
+my_utils.print_list(after_1turn)
+print("ex 3D", count_active(turns(grid_ex,6)))"""
+
+after_6turns = turns(grid,6)
+
+res1 = count_active(after_6turns)
+print(res1)
 
 
 """grid4D_ex = [[ex.splitlines()]]
