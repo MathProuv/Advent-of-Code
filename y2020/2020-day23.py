@@ -51,7 +51,7 @@ class Cups:
         for turn in range(1, n+1):
             if to_print: print(turn, ":", self.cups)
             self.move1(turn)
-            # print(turn)
+            print(turn)
         if to_print: print("final", self.cups)
 
     def score(self):
@@ -81,6 +81,6 @@ print(res1)
 
 
 cups2 = Cups(cups, 1000000)
-#cups2.moves(10000000)
+cups2.moves(10000000)
 res2 = cups2.score2()
 print(res2)
