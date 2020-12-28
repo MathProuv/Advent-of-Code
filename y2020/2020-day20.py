@@ -129,30 +129,30 @@ class Tile:
 
 
 class Jigsaw:
-    """Classe d'un puzzle
+    """
+    Classe d'un puzzle
     
-        Attributes:
-        -----------
-    tiles
-    all_frontieres
-    numbers
-    raw_image
-    decoded_image
+    ## Attributes:
+    - `tiles` ([Tile]): Une liste de tuiles
+    - `all_frontieres` (set(Tile)): L'ensemble de toutes les frontières de toutes les tuiles
+    - `numbers` (set(int)): L'ensemble des numbers des tuiles
+    - `raw_image` ([[Tile]]): Un tableau 2D des tuiles, une fois le puzzle reconstitué
+    - `decoded_image` ([str]): Une liste des lignes de l'image du puzzle
     
-        Methods:
-        --------
-    __init__
-    get_tile_by_number
-    coins
-    bordures
-    constr
-    find_good_voisin
-    decode_image
-    print
-    __repr__
-    count_roughness"""
+    ## Methods:
+    - `__init__`
+    - `get_tile_by_number`
+    - `coins`
+    - `bordures`
+    - `constr`
+    - `find_good_voisin`
+    - `decode_image`
+    - `print`
+    - `__repr__`
+    - `count_roughness`
+    """
 
-    def __init__(self, tiles: [ Tile ] ):
+    def __init__(self, tiles: [Tile]):
         """tiles est une liste de Tile"""
         self.tiles = tiles
         self.all_frontieres = []
@@ -168,7 +168,7 @@ class Jigsaw:
                 return tile
 
 
-    def coins(self) -> [ Tile ] :
+    def coins(self) -> [Tile]:
         res = []
         for tile in self.tiles:
             compt = 0
@@ -180,7 +180,7 @@ class Jigsaw:
                 res.append(tile)
         return res
     
-    def bordures(self) -> [ Tile ] :
+    def bordures(self) -> [Tile]:
         """Fonction inutile (dans mon code) qui retourne une liste des tuiles en bordure"""
         res = []
         for tile in self.tiles:
@@ -192,7 +192,7 @@ class Jigsaw:
                     break
         return res
 
-    def constr(self) -> list( [ Tile ] ):
+    def constr(self) -> [[Tile]]:
         """Retourne une raw_image (un tableau de tuiles)"""
         all_coins = self.coins()
         res = []
@@ -256,7 +256,7 @@ class Jigsaw:
         res = []
         attribut = "pixels" if not with_frontiere else "all_pixels"
 
-        for big_line in self.raw_image: # big_line:  [ Tile ] 
+        for big_line in self.raw_image: # big_line: [Tile]
             len_hauteur = len(big_line[0].get_attribut(attribut))
             for i in range(len_hauteur):
                 little_line = ""
@@ -270,11 +270,13 @@ class Jigsaw:
 
         return res
 
+
     def print(self, with_frontiere=False) -> None:
         my_utils.print_list(self.decode_image(with_frontiere))
     
     def __repr__(self) -> str:
         return "\n".join(self.decoded_image)
+
 
     def count_roughness(self, image=None, step=0) -> int:
         if not step or not image: #default image
