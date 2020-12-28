@@ -2,11 +2,10 @@ import inputAoC as aoc
 import my_utils
 import re
 from math import prod
-import numpy as np
 
 tiles_text = aoc.get_input_file(20, 2020).split("\n\n")
 
-tile_ex = """Tile 2797:
+tile_ex = """Tile:
 .#...#...#
 ##........
 #...#.....
@@ -20,20 +19,20 @@ tile_ex = """Tile 2797:
 
 
 
-
 class Tile:
     """Une tuile = une pièce du puzzle"""
     def __init__(self, tile: str):
         all_pixels = tile.splitlines()
         title = all_pixels.pop(0)
-        self.number = int(re.search(r"Tile (\d+):", title).groups()[0])
+        number_match = re.search(r"Tile (\d+):", title)
+        if number_match: self.number = int(number_match.groups()[0])
+        else: self.number = int() #0
         self.all_pixels = all_pixels
-        self.re_init_params()
+        self._init_params()
 
-    def re_init_params(self) -> None:
-        """Initialise les bordures et les pixels du centre"""
+    def _init_params(self) -> None:
+        """Initialise les bordures et les pixels"""
         n, m = len(self.all_pixels), len(self.all_pixels[0])
-        self.etat = True
         self.haut = self.all_pixels[0]
         self.bas = self.all_pixels[-1]
         gauche, droite = "", ""
@@ -49,7 +48,8 @@ class Tile:
                 self.pixels[i][j] = self.all_pixels[i+1][j+1]
             self.pixels[i] = "".join(self.pixels[i])
     
-    def get_all_borders(self):
+    def get_all_borders(self) -> [str]:
+        """Retourne une liste des 8 frontières de la tuile (4 * 2 côtés)"""
         res = []
         haut = self.all_pixels[0]
         res.append(haut)
@@ -67,47 +67,53 @@ class Tile:
         res.append(droite[::-1])
         return res
     
-    def get_attribut(self, attribut):
+    def get_attribut(self, attribut: str):
+        """Retourne l'attribut de la tuile"""
         if attribut == "gauche": return self.gauche
         elif attribut == "droite": return self.droite
         elif attribut == "haut": return self.haut
         elif attribut == "bas": return self.bas
         elif attribut == "all_pixels": return self.all_pixels
         elif attribut == "pixels": return self.pixels
-        else: raise TypeError
+        elif attribut == "number": return self.number
+        else: 
+            error = "'Tile' object has no attribute '" + attribut + "'"
+            raise AttributeError(error)
 
-    def print(self):
+    def print(self) -> None:
+        """affiche les pixels de la tuile"""
         my_utils.print_list(self.all_pixels)
     
-    def print_frontiere(self):
+    def print_frontiere(self) -> None:
         """affiche la tuile avec une ligne ou colonne vide entre la tuile et ses frontières"""
         print(self.haut[0], "".join(self.haut[1:-1]), self.haut[-1], "\n")
         for i in range(1, len(self.gauche)-1):
             print(self.gauche[i], "".join(self.pixels[i-1]), self.droite[i])
         print("\n"+self.haut[0], "".join(self.haut[1:-1]), self.haut[-1])
     
-    def flip(self):
+    def flip(self) -> None:
         """symétrie selon l'axe vertical"""
         for i in range(len(self.all_pixels)):
             self.all_pixels[i] = self.all_pixels[i][::-1]
-        self.re_init_params()
-    def rotate90(self):
+        self._init_params()
+    def rotate90(self) -> None:
         """rotation d'un quart d'heure"""
         res = [""] * len(self.all_pixels)
         for i in range(len(res)):
             res[i] = "".join([line[i] for line in self.all_pixels])[::-1]
         self.all_pixels = res
-        self.re_init_params()
+        self._init_params()
     
-    def near_frontiere(self, tile2):
-        """Retourne la frontière en commun ou None"""
+    def near_frontiere(self, tile2) -> str:
+        """Retourne la frontière en commun (ou "" s'il n'y en a pas)"""
         borders_2 = tile2.get_all_borders()
         for bord in [self.haut, self.bas, self.gauche, self.droite]:
             if bord in borders_2:
                 return bord
-        return None
+        return str() #""
 
-    def orientate(self, frontiere, orientation="gauche"):
+    def orientate(self, frontiere, orientation="gauche") -> None:
+        """Oriente la tuile pour que frontiere soit au côté orientation"""
         assert frontiere in self.get_all_borders()
         for i in range(16):
             if frontiere == self.get_attribut(orientation):
@@ -120,7 +126,31 @@ class Tile:
 
 
 class Jigsaw:
-    def __init__(self, tiles: [Tile]):
+    """Classe d'un puzzle
+    
+        Attributes:
+        -----------
+    tiles
+    all_frontieres
+    numbers
+    raw_image
+    decoded_image
+    
+        Methods:
+        --------
+    __init__
+    get_tile_by_number
+    coins
+    bordures
+    constr
+    find_good_voisin
+    decode_image
+    print
+    __repr__
+    count_roughness"""
+
+    def __init__(self, tiles: [ Tile ] ):
+        """tiles est une liste de Tile"""
         self.tiles = tiles
         self.all_frontieres = []
         self.numbers = []
@@ -135,7 +165,7 @@ class Jigsaw:
                 return tile
 
 
-    def coins(self) -> [Tile]:
+    def coins(self) -> [ Tile ] :
         res = []
         for tile in self.tiles:
             compt = 0
@@ -147,7 +177,7 @@ class Jigsaw:
                 res.append(tile)
         return res
     
-    def bordures(self) -> [Tile]:
+    def bordures(self) -> [ Tile ] :
         """Fonction inutile (dans mon code) qui retourne une liste des tuiles en bordure"""
         res = []
         for tile in self.tiles:
@@ -159,7 +189,8 @@ class Jigsaw:
                     break
         return res
 
-    def constr(self):
+    def constr(self) -> list( [ Tile ] ):
+        """Retourne une raw_image (un tableau de tuiles)"""
         all_coins = self.coins()
         res = []
         ligne = []
@@ -185,17 +216,14 @@ class Jigsaw:
             # determiner la piece dont il faudra trouver le voisin
             # en connaissant sa frontière et son orientation
 
-            if not voisin:
-                # fin_de_ligne = True
-
+            if not voisin: # fin_de_ligne = True
                 tuile = ligne[0]
                 common_frontiere = tuile.bas
                 orientation = "haut"
                 res.append(ligne)
                 ligne = []
 
-            else:
-                # fin_de_ligne = False
+            else: # fin_de_ligne = False
                 voisin.orientate(common_frontiere, orientation)
                 ligne.append(voisin)
                 
@@ -209,7 +237,7 @@ class Jigsaw:
 
         self.tiles = tiles_backup
         self.raw_image = res
-        self.decoded_image = self.decode_image()
+        self.decoded_image = self.decode_image() #sans les frontières
         return res
 
 
@@ -223,7 +251,7 @@ class Jigsaw:
         res = [""]
         attribut = "pixels" if not with_frontiere else "all_pixels"
 
-        for big_line in self.raw_image: # big_line: [Tile]
+        for big_line in self.raw_image: # big_line:  [ Tile ] 
             for i in range(len(big_line[0].get_attribut(attribut))):
                 little_line = ""
 
@@ -236,10 +264,13 @@ class Jigsaw:
 
         return res
 
-    def print(self, with_frontiere=False):
+    def print(self, with_frontiere=False) -> None:
         my_utils.print_list(self.decode_image(with_frontiere))
+    
+    def __repr__(self) -> str:
+        return "\n".join(self.decoded_image)
 
-    def count_roughness(self):
+    def count_roughness(self) -> int:
         # tant qu'on a 0 monstre:
         #     ré-orienter
         # 
@@ -253,12 +284,12 @@ class Jigsaw:
         return 0
 
 
-
+tile_ex = Tile(tile_ex)
 
 tiles = [Tile(tile) for tile in tiles_text]
 puzzle = Jigsaw(tiles)
 #puzzle.print(True)
-#my_utils.print_list(puzzle.decoded_image) # puzzle.print()
+#my_utils.print_list(puzzle.decoded_image) # puzzle.print(False) # print(puzzle)
 
 def test1():
     this_tile = tiles[0]
