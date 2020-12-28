@@ -161,14 +161,14 @@ class Jigsaw:
     
     ## Methods:
     - `__init__`
+    - `__repr__`
+    - `print`
     - `get_tile_by_number`
     - `coins`
     - `bordures`
     - `constr`
     - `find_good_voisin`
     - `decode_image`
-    - `print`
-    - `__repr__`
     - `count_roughness`
     """
 
@@ -181,6 +181,12 @@ class Jigsaw:
             self.all_frontieres.extend(tile.get_all_borders())
             self.numbers.append(tile.number)
         self.constr()
+    
+    def __repr__(self) -> str:
+        return "\n".join(self.decoded_image)
+
+    def print(self, with_frontiere=False) -> None:
+        my_utils.print_list(self.decode_image(with_frontiere))
     
     def get_tile_by_number(self, number) -> Tile:
         for tile in self.tiles:
@@ -292,13 +298,6 @@ class Jigsaw:
         return res
 
 
-    def print(self, with_frontiere=False) -> None:
-        my_utils.print_list(self.decode_image(with_frontiere))
-    
-    def __repr__(self) -> str:
-        return "\n".join(self.decoded_image)
-
-
     def count_roughness(self, image=None, step=0) -> int:
         if not step or not image: #default image
             image = Tile("Tile -1:\n" + self.__repr__())
@@ -315,15 +314,30 @@ class Jigsaw:
         motif = [ "                  # ",
                   "#    ##    ##    ###",
                   " #  #  #  #  #  #   " ]
+        n0, m0 = len(motif), len(motif[0])
 
         # pour chaque endroit qui peut être le coin sup gauche du monstre:
         #    tester si c'est le monstre
         #       si c'est le monstre:
         #           à chaque case du monstre, mettre 0 dans la copie
 
+        for j in range(n + 1 - n0):
+            for i in range(m + 1 - m0):
+                is_monster = True
+                for j0 in range(n0):
+                    for i0 in range(m0):
+                        if motif[j0][i0] == "#":
+                            is_monster &= image.all_pixels[j+j0][i+i0] == "#"
+                if is_monster:
+                    for j0 in range(n0):
+                        for i0 in range(m0):
+                            if motif[j0][i0] == "#":
+                                image_copy[j+j0][i+i0] = 0
+                    nb_monstre += 1
+
         if nb_monstre :
             return sum(sum(ligne) for ligne in image_copy)
-
+        
         if step % 8 == 4: # 4 or 12
             image.flip()
         image.rotate90()
@@ -331,7 +345,7 @@ class Jigsaw:
             image.flip()
         if step == 16:
             print(Exception("On a fait le tour, on n'a pas trouvé de monstre"))
-            return 0
+            return sum(sum(ligne) for ligne in image_copy)
         
         return self.count_roughness(image, step+1)
 
