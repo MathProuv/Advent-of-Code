@@ -19,52 +19,6 @@ tile_ex = """Tile 2797:
 ...######."""
 
 
-def summary(tile: str) -> dict:
-    pixels = tile.splitlines()
-    title = pixels.pop(0)
-    number = re.search(r"Tile (\d+):", title).groups()[0]
-    res = dict(number=number)
-    res["haut"] = pixels[0]
-    res["bas"] = pixels[-1]
-    gauche, droite = "", ""
-    for ligne in pixels:
-        gauche += ligne[0]
-        droite += ligne[-1]
-    res["gauche"] = gauche
-    res["droite"] = droite
-    return res
-#my_utils.print_dict(summary(tile_ex))
-
-def get_borders(tile: str) -> set:
-    sommaire = summary(tile)
-    res = []
-    for field, val in sommaire.items():
-        if field != "number":
-            res.append(val)
-    return res
-
-def coins(tiles):
-    frontieres = []
-    res = []
-    for tile in tiles:
-        bordures = get_borders(tile)
-        for bord in bordures:
-            frontieres.append(bord)
-            frontieres.append(bord[::-1])
-    for tile in tiles:
-        sommaire = summary(tile)
-        compt = 0
-        for field in ["haut", "bas", "gauche", "droite"]:
-            if frontieres.count(sommaire[field]) == 1:
-                compt += 1
-        if compt == 2:
-            res.append(int(sommaire["number"]))
-    assert len(res) == 4
-    return res
-
-
-res1 = prod(coins(tiles_text))
-print(res1)
 
 
 class Tile:
@@ -72,7 +26,7 @@ class Tile:
     def __init__(self, tile: str):
         all_pixels = tile.splitlines()
         title = all_pixels.pop(0)
-        self.number = re.search(r"Tile (\d+):", title).groups()[0]
+        self.number = int(re.search(r"Tile (\d+):", title).groups()[0])
         self.all_pixels = all_pixels
         self.re_init_params()
 
@@ -177,7 +131,7 @@ class Jigsaw:
     
     def get_tile_by_number(self, number) -> Tile:
         for tile in self.tiles:
-            if tile[number] == number:
+            if tile.number == number:
                 return tile
 
 
@@ -286,7 +240,6 @@ class Jigsaw:
         my_utils.print_list(self.decode_image(with_frontiere))
 
     def count_roughness(self):
-        pass
         # tant qu'on a 0 monstre:
         #     ré-orienter
         # 
@@ -297,13 +250,15 @@ class Jigsaw:
         #           à chaque case du monstre, mettre 0 dans la copie
         # retourner la somme de la copie
 
+        return 0
+
 
 
 
 tiles = [Tile(tile) for tile in tiles_text]
 puzzle = Jigsaw(tiles)
-puzzle.print(True)
-my_utils.print_list(puzzle.decoded_image)
+#puzzle.print(True)
+#my_utils.print_list(puzzle.decoded_image) # puzzle.print()
 
 def test1():
     this_tile = tiles[0]
@@ -326,5 +281,8 @@ def test1():
     tile_bas.print()
 # test1()
 
-res2 = 0
+res1 = prod([int(coin.number) for coin in puzzle.coins()])
+print(res1)
+
+res2 = puzzle.count_roughness()
 print(res2)
