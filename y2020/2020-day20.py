@@ -18,9 +18,30 @@ tile_ex = """Tile:
 ...######."""
 
 
-
 class Tile:
-    """Une tuile = une pièce du puzzle"""
+    """Une tuile = une pièce du puzzle
+    
+    ## Attributes:
+    - `number`
+    - `all_pixels`
+    - `pixels`
+    - `haut`
+    - `bas`
+    - `gauche`
+    - `droite`
+
+    ## Methods:
+    - `__init__`
+    - `_init_params`
+    - `get_all_borders`
+    - `get_attribut`
+    - `print`
+    - `print_frontiere`
+    - `flip`
+    - `rotate90`
+    - `near_frontiere`
+    - `orientate`
+    """
     def __init__(self, tile: str):
         all_pixels = tile.splitlines()
         title = all_pixels.pop(0)
@@ -29,7 +50,6 @@ class Tile:
             self.number = int(number_match.groups()[0])
         else: 
             self.number = int() #0
-            self.title = title[:-1] #(sans :)
         self.all_pixels = all_pixels
         self._init_params()
 
@@ -169,6 +189,7 @@ class Jigsaw:
 
 
     def coins(self) -> [Tile]:
+        """Fonction qui retourne une liste des tuiles des coins"""
         res = []
         for tile in self.tiles:
             compt = 0
