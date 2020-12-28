@@ -24,9 +24,12 @@ class Tile:
     def __init__(self, tile: str):
         all_pixels = tile.splitlines()
         title = all_pixels.pop(0)
-        number_match = re.search(r"Tile (\d+):", title)
-        if number_match: self.number = int(number_match.groups()[0])
-        else: self.number = int() #0
+        number_match = re.search(r"Tile (-?\d+):", title)
+        if number_match: 
+            self.number = int(number_match.groups()[0])
+        else: 
+            self.number = int() #0
+            self.title = title[:-1] #(sans :)
         self.all_pixels = all_pixels
         self._init_params()
 
@@ -206,7 +209,7 @@ class Jigsaw:
         orientation = "gauche"
         ligne.append(tuile)
         
-        while self.tiles:
+        while True:
             # trouver la tuile suivante (qui partage la frontière)
             voisin = self.find_good_voisin(tuile, common_frontiere)
             # print(tuile.number, orientation)
@@ -221,7 +224,9 @@ class Jigsaw:
                 common_frontiere = tuile.bas
                 orientation = "haut"
                 res.append(ligne)
-                ligne = []
+                ligne = []            
+                if not self.tiles:
+                    break
 
             else: # fin_de_ligne = False
                 voisin.orientate(common_frontiere, orientation)
@@ -248,11 +253,12 @@ class Jigsaw:
 
 
     def decode_image(self, with_frontiere=False) -> [str]:
-        res = [""]
+        res = []
         attribut = "pixels" if not with_frontiere else "all_pixels"
 
         for big_line in self.raw_image: # big_line:  [ Tile ] 
-            for i in range(len(big_line[0].get_attribut(attribut))):
+            len_hauteur = len(big_line[0].get_attribut(attribut))
+            for i in range(len_hauteur):
                 little_line = ""
 
                 for tuile in big_line:
@@ -270,18 +276,41 @@ class Jigsaw:
     def __repr__(self) -> str:
         return "\n".join(self.decoded_image)
 
-    def count_roughness(self) -> int:
-        # tant qu'on a 0 monstre:
-        #     ré-orienter
-        # 
-        # faire une copie de l'image avec des 0 pour chaque '.' et des 1 pour chaque "#"
+    def count_roughness(self, image=None, step=0) -> int:
+        if not step or not image: #default image
+            image = Tile("Tile -1:\n" + self.__repr__())
+
+        n, m = len(image.all_pixels), len(image.all_pixels[0])
+        image_copy = [""] * n
+        for i in range(n):
+            image_copy[i] = [0] * m
+            for j in range(m):
+                if image.all_pixels[i][j] == "#":
+                    image_copy[i][j] = 1
+        
+        nb_monstre = 0
+        motif = [ "                  # ",
+                  "#    ##    ##    ###",
+                  " #  #  #  #  #  #   " ]
+
         # pour chaque endroit qui peut être le coin sup gauche du monstre:
         #    tester si c'est le monstre
         #       si c'est le monstre:
         #           à chaque case du monstre, mettre 0 dans la copie
-        # retourner la somme de la copie
 
-        return 0
+        if nb_monstre :
+            return sum(sum(ligne) for ligne in image_copy)
+
+        if step % 8 == 4: # 4 or 12
+            image.flip()
+        image.rotate90()
+        if step == 8:
+            image.flip()
+        if step == 16:
+            print(Exception("On a fait le tour, on n'a pas trouvé de monstre"))
+            return 0
+        
+        return self.count_roughness(image, step+1)
 
 
 tile_ex = Tile(tile_ex)
