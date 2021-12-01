@@ -30,8 +30,6 @@ Il va falloir utiliser exactement la même hiérarchie et respecter précisémen
  ┃ ┣ 📜2015-day03.py
  ┃ ┗ 📜__init__.py
  ┣ 📂y2021
- ┃ ┣ 📜2021-day01.py
- ┃ ┣ 📜2021-day25.py
  ┃ ┗ 📜__init__.py
  ┣ 📜.gitignore
  ┣ 📜inputAoC.py
