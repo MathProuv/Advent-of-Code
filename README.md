@@ -18,7 +18,7 @@ Comment trouver votre cookie ?
 
 Il va falloir utiliser exactement la même hiérarchie et respecter précisément le nom des fichiers :
 
-```markdown
+```tree
 📦hierarchie
  ┣ 📂inputs
  ┃ ┣ 📜2015_1.txt
@@ -42,7 +42,9 @@ Il va falloir utiliser exactement la même hiérarchie et respecter précisémen
  ┗ 📜__main__.py
 ```
 
-Pour une meilleure hiérarchisation de mes codes, j'ai préféré les séparer dans des sous-packages. Ainsi, il y a maintenant une petite manipulation à faire pour pouvoir utiliser `inputAoC` dans les packages.
+Remarque : initialement le dossier `inputs` est vide, les fichiers `inputs/AAAA-J.txt` sont créés et remplis par la méthode `get_input_file` du module `inputAoC`.
+
+---
 
 En particulier, pour runner le code du jour `JJ` de l'année `AAAA` (avec `JJ` entre 1 et 25 et `AAAA` entre 2015 et 2035), le code doit être dans le dossier `yAAAA` et le fichier doit s'appeler `AAAA-dayJJ.py` (`JJ` en 2 chiffres **obligatoirement ici**). Il faudra ensuite exécuter le fichier `__main__.py` d'une des façons suivantes (`JJ` en 1 ou 2 chiffres) :
 
