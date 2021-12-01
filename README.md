@@ -19,6 +19,27 @@ Comment trouver votre cookie ?
 Il va falloir utiliser exactement la même hiérarchie et respecter précisément le nom des fichiers :
 
 ```markdown
+📦hierarchie
+ ┣ 📂inputs
+ ┃ ┣ 📜2015_1.txt
+ ┃ ┣ 📜2015_2.txt
+ ┃ ┗ 📜2015_3.txt
+ ┣ 📂y2015
+ ┃ ┣ 📜2015-day01.py
+ ┃ ┣ 📜2015-day02.py
+ ┃ ┣ 📜2015-day03.py
+ ┃ ┗ 📜__init__.py
+ ┣ 📂y2021
+ ┃ ┣ 📜2021-day01.py
+ ┃ ┣ 📜2021-day25.py
+ ┃ ┗ 📜__init__.py
+ ┣ 📜.gitignore
+ ┣ 📜inputAoC.py
+ ┣ 📜my_utils.py
+ ┣ 📜private.py
+ ┣ 📜README.md
+ ┣ 📜__init__.py
+ ┗ 📜__main__.py
 ```
 
 Pour une meilleure hiérarchisation de mes codes, j'ai préféré les séparer dans des sous-packages. Ainsi, il y a maintenant une petite manipulation à faire pour pouvoir utiliser `inputAoC` dans les packages.
