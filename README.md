@@ -57,6 +57,6 @@ Indication : le code pourrait commencer comme suit :
 
 ```python
 import inputAoC as aoc
-data = aoc.get_input_file(JJ,AAAA).splitlines()
-#data = [int(i) for i in data]  ### si les données sont des nombres
+data = aoc.get_input_file(JJ,AAAA).splitlines()   # si les données sont sur des lignes séparées
+data = [int(i) for i in data]  # si les données sont des nombres
 ```
