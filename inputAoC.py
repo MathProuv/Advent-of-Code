@@ -9,9 +9,9 @@ def get_input(day, year=2020):
         requete = requests.get(url=url, cookies=cookies)
         input = requete.text[:-1]  # = requete.content.decode()[:-1]
         if input[:63] == "Please don't repeatedly request this endpoint before it unlocks":
-            raise Exception("Do you have a time machine? Because I don't")
+            raise ImportError("Do you have a time machine? Because I don't")
         elif input[:28] == "Puzzle inputs differ by user":
-            raise Exception("You don't have the right cookie[\"session\"]")
+            raise ImportError("You don't have the right cookie[\"session\"]")
         else:
             return input
     except requests.ConnectionError:
