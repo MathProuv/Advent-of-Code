@@ -23,12 +23,6 @@ input = ex
 input = aoc.get_input_file(4,2021)
 input = input.split('\n\n')
 
-def print_board(board):
-    print('[')
-    for i in board:
-        print(' ',i)
-    print(']')
-
 ### Récolte et mise en forme des données
 
 numbers = list(map(int,input[0].split(',')))
@@ -36,17 +30,15 @@ boards = input[1:]
 
 for x in range(len(boards)):
     board = boards[x].split('\n')
-    board_ints = []
-    for i in range(len(board)): #row
-        row = []
-        for j in range(5): #col
-            nb = board[i][3*j:3*j+2]
-            row.append(int(nb))
-        board_ints.append(row)
-    boards[x] = board_ints
+    for i in range(len(board)):
+        row = board[i].strip().replace("  ", " ").split(" ")
+        board[i] = list(map(int,row))
+    boards[x] = board
 #print(numbers)
-#for board in boards:
-#    print_board(board)
+for board in boards:
+    for row in board:
+        print(row)
+    print()
 
 ### Calcul du score
 
@@ -60,12 +52,14 @@ def score(board_win,nb_coups_win):
 
 ### Condition de victoire
 
-def check_in(line, numbers):
+def check_in(line, numbers): 
+    """check si chaque nb de line est dans numbers"""
     for nb in line:
         if nb not in numbers: return False
     return True
 
 def is_win(board, numbers):
+    """check si la board gagne après le tirage des nb de numbers"""
     #check rows
     for i in range(len(board)):
         line = board[i]
@@ -80,31 +74,30 @@ def is_win(board, numbers):
 
 ### Recherche 1ère gagnante et dernière gagnante
 
+# tant qu'on n'a pas de victoire, on ajoute un nombre
 i=0
 victoire = False
-while not(victoire): # tant qu'on n'a pas de victoire, on ajoute un nombre
+while not(victoire):
     i += 1
-    for b in range(len(boards)):
-        board = boards[b]
-        if is_win(board,numbers[:i]):
+    for board in boards:
+        if is_win(board,numbers[:i]): #on commence à gagner
             board_win = board
-            board_win_idx = b
             nb_coups_win = i
             victoire=True
-#print("la",board_win_idx,"ième board gagne en",nb_coups,"coups")
+#print(board_win,"gagne en",nb_coups_win,"coups")
 res1 = score(board_win,nb_coups_win)
 print(res1)
 
+# tant qu'on a des victoires, on enlève un nombre
 i=len(numbers)
 victoire = True
-while victoire: # tant qu'on a des victoires, on enlève un nombre
+while victoire:
     i -= 1
-    for b in range(len(boards)):
-        board = boards[b]
-        if not(is_win(board,numbers[:i])):
-            board_lost = board
-            board_lost_idx = b
-            nb_coups_lost = i+1 #on a enlevé le nombre qui faisait gagner
+    for board in boards:
+        if not(is_win(board,numbers[:i])): #on ne gagne plus
+            board_lost = board #la derniere board gagnante
+            nb_coups_lost = i+1 #le nb de coups pour gagner la dernière partie
             victoire=False
+#print(board_lost,"gagne en",nb_coups_lost,"coups")
 res2 = score(board_lost,nb_coups_lost)
 print(res2)
