@@ -1,10 +1,14 @@
+# Données personnelles liées à un utilisateur
 private.py
 inputs/*
 
+# fichiers compilés
 *.pyc
 *__pycache__*
 
+# tri personnel
 *nope*
-*fetch*
 
-*Antoine.py
+# Si on veut exécuter les fichiers en dehors du package Advent-of-Code,
+# on doit avoir inputAoC.py dans le même dossier
+y*/inputAoC.py
