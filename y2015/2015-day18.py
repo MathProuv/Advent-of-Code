@@ -76,7 +76,10 @@ def step_lamp(grid,i,j):
     res = ''
     if (is_on(lamp) and 2 <= nb <= 3) or (not(is_on(lamp)) and nb == 3): res = "#"
     else : res = '.'
-    if (i,j) == (0,0) or (i,j) == (len(grid)-1,0) or (i,j) == (0,len(grid[0])-1) or (i,j) == (len(grid)-1,len(grid[0])-1): res = "#"
+    if i in (0,len(grid)-1) and j in (0,len(grid[0])-1):
+    #if (i,j) in [(0,0),(len(grid)-1,0),(0,len(grid[0])-1),(len(grid)-1,len(grid[0])-1)]:
+    #if (i,j) == (0,0) or (i,j) == (len(grid)-1,0) or (i,j) == (0,len(grid[0])-1) or (i,j) == (len(grid)-1,len(grid[0])-1): 
+        res = "#"
     #print(lamp, nb, res)
     return res
 
