@@ -56,7 +56,13 @@ def scores_incomplete(input):
     scores = sorted(scores)[::-1]
     if 0 in scores:
         scores = scores[:scores.index(0)]
-    scores = scores[::-1]
+    #scores = scores[::-1] #remettre dans l'ordre n'est pas nécessaire
+    return scores[len(scores)//2]
+    scores = []
+    for line in input:
+        score = score_incomplete(line)
+        if score: scores.append(score)
+    scores = sorted(scores)[::-1]
     return scores[len(scores)//2]
 
 res2 = scores_incomplete(input)
