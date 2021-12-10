@@ -41,14 +41,15 @@ print(res1)
 def score_incomplete(line):
     if score_corrupted(line): return 0
     line = list(remove_empty(line))
+    dict_scores = {'<':'4', '{':'3', '[':'2', '(':'1'}
+    res = int("".join([dict_scores[carac] for carac in line[::-1]]),5)
+    return res
     res = 0
     dict_scores = {'<':4, '{':3, '[':2, '(':1}
     for carac in line[::-1]:
         res *= 5
         res += dict_scores[carac]
         #res = 5*res + dict_scores[carac]
-    #dict_scores = {'<':'4', '{':'3', '[':'2', '(':'1'}
-    #res = int("".join([dict_scores[carac] for carac in line[::-1]]),5)
     return res
 
 def scores_incomplete(input):
