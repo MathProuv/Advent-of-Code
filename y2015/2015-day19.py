@@ -118,6 +118,20 @@ def decompose_atoms(atoms,repls):
     print(atoms)
     return create_atoms(atoms,repls)
 
-#res2 = decompose(molecule, repls)
-#print(res2)
+def reduce_atoms(atoms,repls):
+    # on cut après les Ar
+    assert ("Ar" not in repls.keys())
+    res = []
+    while "Ar" in atoms and atoms.index("Ar") != len(atoms)-1:
+        idx = atoms.index("Ar")
+        res.append(atoms[:idx+1])
+        atoms = atoms[idx+1:]
+    res.append(atoms)
+    return res
+
+def create_atoms(atoms,repls):
+    return
+
+res2 = decompose(molecule, repls)
+print(res2)
 print("2nd star pas résolue")
