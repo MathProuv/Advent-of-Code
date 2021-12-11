@@ -31,7 +31,7 @@ def score_corrupted(line):
     dict_scores = {'>':25137, '}':1197, ']':57, ')':3}
     return dict_scores[line[idx]]
 
-def scores_corrupted(line):
+def scores_corrupted(input):
     scores = [score_corrupted(line) for line in input]
     return sum(scores)
 
