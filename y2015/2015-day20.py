@@ -1,10 +1,11 @@
 import inputAoC as aoc
-from math import sqrt as lsqrt
+
+print("Ce programme prend un peu de temps, mais il fonctionne")
 
 input = int(aoc.get_input_file(20,2015))
 
-def facteurs(x):
-    """facteurs(n): décomposition d'un nombre entier n en facteurs premiers"""
+def diviseurs(x):
+    """diviseurs(n): set des diviseurs de n"""
     F = set()
     F.add(1)
     for i in range(1, x + 1):
@@ -13,7 +14,7 @@ def facteurs(x):
     return F
 
 def house(n):
-    F = facteurs(n)
+    F = diviseurs(n)
     return sum(F)*10
 
 def ex(N):
