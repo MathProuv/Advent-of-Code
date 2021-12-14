@@ -7,10 +7,9 @@ deb, inserts = input.split('\n\n')
 inserts = dict([insert.split(' -> ') for insert in inserts.splitlines()])
 
 class Molecule:
-    """
-    :type couples: defaultdict(int)  
-    :type l_debut,l_fin: '',''
-    """
+    # couples = defaultdict(int)  
+    # l_debut,l_fin = '',''
+
     def __init__(self, depart) -> None:
         self.couples = defaultdict(int)
         if depart:
