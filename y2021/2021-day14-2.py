@@ -21,6 +21,7 @@ class Molecule:
             self.couples[voisin] += 1
     
     def step(self, inserts):
+        """retourne une nouvelle Molecule"""
         res = Molecule('')
         res.l_debut,res.l_fin = self.l_debut,self.l_fin
         for couple in self.couples:
@@ -37,8 +38,9 @@ class Molecule:
         return res
     
     def n_steps(self, N, inserts):
+        """retourne une nouvelle Molecule"""
         res = self
-        for n in range(N):
+        for _ in range(N):
             res = res.step(inserts)
         return res
     
