@@ -32,10 +32,10 @@ def step(deb, inserts=inserts):
     return res
 def n_steps(N, deb=deb, inserts=inserts):
     for n in range(N):
-        print(n, deb[:min(100,len(deb))])
+        #print(n, deb[:min(100,len(deb))])
         deb = step(deb,inserts)
         score(deb)
-        print()
+        #print()
     #print(n+1,len(deb))
     return deb
 
@@ -44,6 +44,7 @@ def score(deb):
     for l in deb:
         if l in res: res[l] += 1
         else: res[l] = 1
+    #res = dict([(l,deb.count(l)) for l in deb])
     return max(res.values()) - min(res.values())
     m, M = '', ''
     m_val, M_val = len(deb),0
@@ -84,15 +85,16 @@ class Molecule:
         return str(self.occurrences) + '\n' + str(self.couples)
     
     def step(self, inserts):
+        """retourne une nouvelle molécule"""
         res = Molecule('')
         res.l_debut,res.l_fin = self.l_debut,self.l_fin
 
         for couple in self.couples:
             if couple in inserts:
-                # AB -> C   <==>
-                # voisins += AC,CB & occurences += C,A/2,B/2 
+                # AB -> C   <==>   voisins += AC,CB & occurences += C,A/2,B/2
                 # (A et B seront comptés 2 fois sauf si début et fin)
-                A,B,C = couple, inserts[couple]
+                A,B = couple
+                C = inserts[couple]
                 nb = self.couples[couple]
                 #print(A,B,C,nb)
                 #res.occurrences[C] += nb
@@ -127,7 +129,6 @@ class Molecule:
     def score(self):
         return max(self.occurrences.values()) - min(self.occurrences.values())
 
-    
 molecule = Molecule(deb)
 
 """print(molecule)
