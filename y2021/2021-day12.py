@@ -18,9 +18,6 @@ for a,b in connections:
     if b != "start" and a != "end": connec_dict[a].add(b)
     if a != "start" and b != "end": connec_dict[b].add(a)
 
-def is_big(cave):
-    return cave.upper() == cave
-
 chemins = []
 stack = [['start']]
 stack_double = []
@@ -32,7 +29,7 @@ while stack:
         chemin = temp + [next]
         if next == 'end':
             chemins.append(chemin)
-        elif is_big(next) or next not in temp:
+        elif next.isupper() or next not in temp:
             stack.append(chemin)
         #new for part 2
         elif next in temp:
@@ -48,7 +45,7 @@ while stack_double:
         chemin = temp + [next]
         if next == 'end':
             chemins.append(chemin)
-        elif is_big(next) or next not in temp:
+        elif next.isupper() or next not in temp:
             stack_double.append(chemin)
 
 res2 = len(chemins)
