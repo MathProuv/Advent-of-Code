@@ -25,16 +25,16 @@ class Molecule:
         res = Molecule('')
         res.l_debut,res.l_fin = self.l_debut,self.l_fin
         for couple in self.couples:
+            nb = self.couples[couple]
             if couple in inserts:
                 # AB -> C   <==>
                 # voisins += AC,CB
                 A,B = couple
                 C = inserts[couple]
-                nb = self.couples[couple]
                 res.couples[A+C] += nb
                 res.couples[C+B] += nb
             else:
-                res.couples[couple] += self.couples[couple]
+                res.couples[couple] += nb
         return res
     
     def n_steps(self, N, inserts):
