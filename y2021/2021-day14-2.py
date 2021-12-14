@@ -51,7 +51,7 @@ class Molecule:
             occurrences[A] += nb
             occurrences[B] += nb
         # on a tout compté en double
-        return int((max(occurrences.values()) - min(occurrences.values()))/2)
+        return (max(occurrences.values()) - min(occurrences.values())) // 2
 
 molecule = Molecule(deb)
 
