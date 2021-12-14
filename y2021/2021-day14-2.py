@@ -12,13 +12,12 @@ class Molecule:
     :type l_debut,l_fin: '',''
     """
     def __init__(self, depart) -> None:
-        """:param depart: string de la molécule initiale"""
         self.couples = defaultdict(int)
         if depart:
             self.l_debut,self.l_fin = depart[0],depart[-1]
         for i in range(len(depart)-1):
-            voisin = depart[i:i+2]
-            self.couples[voisin] += 1
+            couple = depart[i:i+2]
+            self.couples[couple] += 1
     
     def step(self, inserts):
         """retourne une nouvelle Molecule"""
