@@ -12,6 +12,7 @@ input = """1163751742
 1293138521
 2311944581"""
 input = aoc.get_input_file(15,2021)
+input = input.splitlines()
 
 def print_carte(carte):
     for line in carte: print(line)
@@ -38,19 +39,19 @@ def neighbors(s,P,Q,n,m):
     x,y = s
     res = []
     #for i in range(x-1,x+2):
-    #    for j in range(y-1,y+2):
+    #    for j in range(y-1,y+2): 
+    #        if (x==i or y==j) and not(x==i and y==j): #xor
     for i,j in [(x,y-1),(x,y+1),(x-1,y),(x+1,y)]:
-            if (x==i or y==j) and not(x==i and y==j) and 0 <= i < n and 0 <= j < m and (i,j) not in P:
-                res.append((i,j))
-                Q.add((i,j)) #Q est un set donc add pas s'il y est déjà
+        if 0 <= i < n and 0 <= j < m and (i,j) not in P:
+            res.append((i,j))
+            Q.add((i,j)) #Q est un set donc add pas s'il y est déjà
     return res
 
 def dijsktra(carte):
     n,m = len(carte),len(carte[0])
     start = (0,0)
     end = (n-1, m-1)
-    P = set()
-    Q = set()
+    P,Q = set(), set()
     d = [infty] * n
     for i in range(n): 
         d[i] = [infty] * m
@@ -66,6 +67,20 @@ def dijsktra(carte):
             maj_distances(sommet,s,d,carte)
     return d[end[0]][end[1]]
 
-carte1 = [[int(c) for c in line] for line in input.splitlines()]
+carte1 = [[int(c) for c in line] for line in input]
 res1 = dijsktra(carte1)
 print(res1)
+
+n,m = len(input),len(input[0])
+carte2 = [0] * 5*n
+for l in range(5*n):
+    carte2[l] = [0] * 5*m
+for I in range(5):
+    for J in range(5):
+        for i in range(I*n,(I+1)*n):
+            for j in range(J*m,(J+1)*m):
+                carte2[i][j] = (carte1[i%n][j%m] + I + J) % 9 + 1
+#print_carte(carte2)
+print("takes about 15-20s, no worries")
+res2 = dijsktra(carte2)
+print(res2)
