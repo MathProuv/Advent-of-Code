@@ -1,5 +1,6 @@
 import inputAoC as aoc
-from math import inf as infty
+#from math import inf as infty
+infty = float('inf')
 
 input = """1163751742
 1381373672
