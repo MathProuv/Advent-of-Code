@@ -69,9 +69,8 @@ def read_paquet(reste):
 def eval(paquets_res):
     if isinstance(paquets_res,int):
         return paquets_res
-    else:
-        operator = paquets_res.pop(0)
-        return operator([eval(paquet) for paquet in paquets_res])
+    operator = paquets_res.pop(0)
+    return operator([eval(paquet) for paquet in paquets_res])
 
 ##############################
 
