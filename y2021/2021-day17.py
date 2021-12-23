@@ -1,19 +1,18 @@
 import inputAoC as aoc
-from math import sqrt
 
 input = "target area: x=20..30, y=-10..-5"
 input = aoc.get_input_file(17,2021)
-#target area: x=155..215, y=-132..-72
 
 def get_target(input):
+    """returns ([x1,x2],[y1,y2])"""
     #re.format("target area: x={x1}..{x2}, y={y1}..{y2}") #??
     xs, ys = input[len('target area: x='):].split(', y=')
-    xs = sorted(map(int, xs.split('..')))
+    xs = sorted(map(int, xs.split('..'))) #déjà sorted, list suffit
     ys = sorted(map(int, ys.split('..')))
     return xs,ys
 
 target = get_target(input)
-print(target)
+#print(target)
 
 def is_in_target(x,y, target):
     xs, ys = target
@@ -23,7 +22,7 @@ def launch(vx,vy,target):
     """returns a boolean indicating if it has reached"""
     assert(not is_in_target(0,0,target)) #else not borned
     x,y = 0,0
-    trajectory = [(x,y)]
+    #trajectory = [(x,y)]
     while y >= target[1][0] and not is_in_target(x,y,target):
         x += vx
         y += vy
@@ -33,25 +32,20 @@ def launch(vx,vy,target):
     #print(trajectory)
     return is_in_target(x,y, target)
 
-
-#print(launch(6,9, target))
-#print(launch(29,-6, target))
-
-My = target[1][0]
-res1 = My*(My+1)//2
+# les points en Y sont symétriques
+Mvy = target[1][0]
+res1 = Mvy*(Mvy+1)//2
 print(res1)
 
 def test_interval(target):
-    mx = 0
-    Mx = target[0][1]
-    my = target[1][0]
-    My = -my
+    mvx = 0
+    Mvx = target[0][1]
+    mvy = target[1][0]
+    Mvy = -mvy
     compt = 0
-    for vx in range(mx,Mx+1):
-        for vy in range(my,My+1):
-            if launch(vx,vy,target):
-                #print(vx,vy)
-                compt += 1
+    for vx in range(mvx,Mvx+1):
+        for vy in range(mvy,Mvy+1):
+            if launch(vx,vy,target): compt += 1
     return compt
 
 res2 = test_interval(target)
