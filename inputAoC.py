@@ -1,6 +1,6 @@
 import private
 
-def get_input(day, year=2020):
+def get_input(day, year=2022):
     """ return the personnal input of a day in Advent of Code """
     import requests
     cookies = private.cookies

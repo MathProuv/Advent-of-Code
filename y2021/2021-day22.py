@@ -1,4 +1,5 @@
 import inputAoC as aoc
+from functools import reduce
 
 input = aoc.get_input_file(22,2021)
 
@@ -40,3 +41,16 @@ def modelisation(instrs):
 
 res1 = modelisation(instrs)
 print(res1)
+
+print([i[1] for i in instrs])
+
+X_MIN = reduce(lambda acc,x:min(x[0],acc),[i[1] for i in instrs],0)
+X_MAX = reduce(lambda acc,x:max(x[1],acc),[i[1] for i in instrs],0)
+Y_MIN = reduce(lambda acc,y:min(y[0],acc),[i[2] for i in instrs],0)
+Y_MAX = reduce(lambda acc,y:max(y[1],acc),[i[2] for i in instrs],0)
+Z_MIN = reduce(lambda acc,z:min(z[0],acc),[i[3] for i in instrs],0)
+Z_MAX = reduce(lambda acc,z:max(z[1],acc),[i[3] for i in instrs],0)
+
+print(X_MIN,X_MAX)
+print(Y_MIN,Y_MAX)
+print(Z_MIN,Z_MAX)
