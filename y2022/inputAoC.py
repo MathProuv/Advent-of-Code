@@ -35,12 +35,12 @@ def get_input_file(day, year=2022, rewrite=False, name=None):
         file = open(name, "w")
         input = get_input(day, year)
         file.write(input)
-    finally:
-        file.close()
+    
+    file.close()
     return input
 
 def name_file(day, year):
-    return "inputs/{y}_{d}.txt".format(y=str(year), d=str(day))
+    return "../inputs/{y}_{d}.txt".format(y=str(year), d=str(day))
     return "{y}-day{d}.txt".format(y=str(year), d=str(day))
 
 def url_aoc(day, year):

@@ -11,4 +11,4 @@ inputs/*
 
 # Si on veut exécuter les fichiers en dehors du package Advent-of-Code,
 # on doit avoir inputAoC.py dans le même dossier
-y*/inputAoC.py
+#y*/inputAoC.py

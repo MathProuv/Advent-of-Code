@@ -1,6 +1,6 @@
 import private
 
-def get_input(day, year=2022):
+def get_input(day, year=2021):
     """ return the personnal input of a day in Advent of Code """
     import requests
     cookies = private.cookies
@@ -18,8 +18,8 @@ def get_input(day, year=2022):
         print("No connection")
 
 
-def get_input_file(day, year=2022, rewrite=False, name=None):
-    """Return the content of the file "input/{year}_{day}.txt. 
+def get_input_file(day, year=2021, rewrite=False, name=None):
+    """Return the content of the file "../input/{year}_{day}.txt. 
     If the file doesn't exist: create and write the file
 
     :param rewrite: rewrite the file
@@ -40,7 +40,7 @@ def get_input_file(day, year=2022, rewrite=False, name=None):
     return input
 
 def name_file(day, year):
-    return "inputs/{y}_{d}.txt".format(y=str(year), d=str(day))
+    return "../inputs/{y}_{d}.txt".format(y=str(year), d=str(day))
     return "{y}-day{d}.txt".format(y=str(year), d=str(day))
 
 def url_aoc(day, year):
