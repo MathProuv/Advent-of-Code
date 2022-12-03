@@ -1,12 +1,26 @@
 import inputAoC as aoc
 
-input = aoc.get_input(1,2022)
+input = """1000
+2000
+3000
 
-inputs_by_elf = [sum(list(map(int,inp.split("\n")))) for inp in input.split("\n\n")]
-inputs_by_elf.sort()
+4000
 
-res1 = inputs_by_elf[-1]
-res2 = sum(inputs_by_elf[-3:])
+5000
+6000
+
+7000
+8000
+9000
+
+10000"""
+input = aoc.get_input_file(1,2022)
+items = input.split("\n\n")
+
+items_by_elf = sorted([sum(list(map(int,inp.split("\n")))) for inp in items])
+
+res1 = items_by_elf[-1]
+res2 = sum(items_by_elf[-3:])
 
 print(res1)
 print(res2)
