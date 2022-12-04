@@ -9,7 +9,8 @@ CrZsJsPPZsGzwwsLwLmpwMDw"""
 input = aoc.get_input_file(3,2022)
 backpacks = input.split('\n')
 
-def score(letter):
+def priority(letter):
+    #return (ord(letter)-91)%58-5
     if letter == letter.upper():
         return 26 + ord(letter) - ord('A') + 1
     else:
@@ -20,7 +21,7 @@ for backpack in backpacks:
     n = len(backpack)
     comp1, comp2 = backpack[:n//2], backpack[n//2:]
     common = set(comp1).intersection(set(comp2)).pop()
-    res1 += score(common)
+    res1 += priority(common)
 print(res1)
 
 groups = []
@@ -31,5 +32,5 @@ for i in range(len(backpacks)//3):
 res2 = 0
 for group in groups:
     common = set(group[0]).intersection(group[1]).intersection(group[2]).pop()
-    res2 += score(common)
+    res2 += priority(common)
 print(res2)
