@@ -23,19 +23,18 @@ def get_input_file(day, year=2022, rewrite=False, name=None):
     If the file doesn't exist: create and write the file
 
     :param rewrite: rewrite the file
-    :param name: write/read/rewrite the file with the new name
+    :param name: read/write/rewrite the file with the new name
     """
 
     if not name: name = name_file(day, year)
     try:
-        file = open(name, "r")
         if rewrite: raise FileNotFoundError
+        file = open(name, "r")
         input = file.read()
     except FileNotFoundError:
-        file = open(name, "w")
         input = get_input(day, year)
+        file = open(name, "w")
         file.write(input)
-    
     file.close()
     return input
 
