@@ -14,10 +14,8 @@ res1 = 0
 res2 = 0
 for pair in pairs:
     left1, right1, left2, right2 = map(int,re.match("([0-9]+)-([0-9]+),([0-9]+)-([0-9]+)", pair).groups())
-    if left2 <= left1 and right1 <= right2 or left1 <= left2 and right2 <= right1:
-        res1 += 1
-    #if not(right1 < left2 or right2 < left1):
-    if left2 <= right1 and left1 <= right2:
-        res2 += 1
+    res1 += left2 <= left1 and right1 <= right2 or left1 <= left2 and right2 <= right1
+    res2 += left2 <= right1 and left1 <= right2
+    #not(right1 < left2 or right2 < left1)
 print(res1)
 print(res2)
