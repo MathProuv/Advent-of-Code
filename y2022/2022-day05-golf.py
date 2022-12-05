@@ -12,4 +12,5 @@ for l in open(0):
 			s[y-1].append(s[x-1].pop())
 			z.append(t[x-1].pop())
 		t[y-1].extend(z[::-1])
-print("".join([s[i][-1]for i in range(9)]),"".join([t[i][-1]for i in range(9)]))
+def r(s):return "".join([s[i][-1]for i in range(9)])
+print(r(s),r(t))
