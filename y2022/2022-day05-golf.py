@@ -4,7 +4,7 @@ for l in open(0):
 	if l=='\n':b,t=0,[s[i].copy()for i in range(9)]
 	elif b: 
 		for i in range(9):
-			if "A"<=l[4*i+1]<="Z":s[i].insert(0,l[4*i+1])
+			if "A"<=l[4*i+1]:s[i].insert(0,l[4*i+1])
 	else:
 		n,x,y=map(int,re.findall('\d+',l))
 		z=[]
