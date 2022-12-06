@@ -9,8 +9,8 @@ for l in open(0):
 		n,x,y=map(int,re.findall('\d+',l))
 		z=[]
 		for _ in range(n):
-			s[y-1].append(s[x-1].pop())
-			z.append(t[x-1].pop())
-		t[y-1].extend(z[::-1])
+			s[y-1]+=s[x-1].pop()
+			z+=t[x-1].pop()
+		t[y-1]+=z[::-1]
 def r(s):return "".join([s[i][-1]for i in range(9)])
 print(r(s),r(t))
