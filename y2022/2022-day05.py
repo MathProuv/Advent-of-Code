@@ -1,6 +1,19 @@
-import inputAoC as aoc
-from collections import deque
-import re
+import inputAoC as aoc, re
+class deque:
+    def __init__(self) -> None:
+        self.list = []
+    def append(self, elem):
+        self.list.append(elem)
+    def pop(self):
+        return self.list.pop()
+    def copy(self):
+        res = deque()
+        for elem in self.list:
+            res.append(elem)
+        return res
+    def extend(self,elems):
+        for elem in elems:
+            self.list.append(elem)
 
 input = """    [D]    
 [N] [C]    
