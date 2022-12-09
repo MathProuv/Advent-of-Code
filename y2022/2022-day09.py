@@ -9,6 +9,7 @@ D 10
 L 25
 U 20"""
 input = aoc.get_input_file(9,2022)
+#input = open("../inputs/2022_9.txt").read()
 moves = [[line[0],int(line[2:])] for line in input.splitlines()]
 
 def move_head(head,dir):
@@ -16,6 +17,12 @@ def move_head(head,dir):
     elif dir == 'R': head[0] += 1
     elif dir == 'D': head[1] -= 1
     else: head[1] += 1
+    """ with python 3.10, match can be used instead of elifs
+    match dir:
+        case 'L': head[0] -= 1
+        case 'R': head[0] += 1
+        case 'D': head[1] -= 1
+        case 'U': head[1] += 1"""
 
 def move_knot(head,tail):
     dx, dy = head[0]-tail[0], head[1]-tail[1]
