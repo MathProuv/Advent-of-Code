@@ -6,7 +6,7 @@ input = aoc.get_input_file(10,2022)
 instrs = input.splitlines()
 
 x = 1
-xs = []
+xs = [x]
 for instr in instrs:
     if instr == "noop":
         xs += [x]
@@ -16,12 +16,12 @@ for instr in instrs:
 
 res1 = 0
 for i in range(20,222,40):
-    res1 += i * xs[i-1]
+    res1 += i * xs[i]
 print(res1)
 
 res2 = ""
-for c in range(240):
-    if abs(xs[c] - c%40) <= 1: res2 += "#"
+for c in range(1,241):
+    if abs(xs[c] - (c-1)%40) <= 1: res2 += "#"
     else: res2 += "."
 
 for i in range(0,202,40):
