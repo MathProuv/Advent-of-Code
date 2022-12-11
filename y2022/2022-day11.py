@@ -3,38 +3,33 @@ import re
 
 data = aoc.get_input_file(11,2022)
 
-def operation0(old): return old * 19
-def operation1(old): return old * 11
-def operation2(old): return old + 6
-def operation3(old): return old + 5
-def operation4(old): return old + 7
-def operation5(old): return old * old
-def operation6(old): return old + 2
-def operation7(old): return old + 3
+regex = """Monkey \d+:
+  Starting items: (\d+[, \d+]*)
+  Operation: new = old (\*|\+) (old|\d+)
+  Test: divisible by (\d+)
+    If true: throw to monkey (\d+)
+    If false: throw to monkey (\d+)"""
+class Monkey:
+    def __init__(self,data) -> None:
+        args = re.match(regex,data).groups()
+        self.items = list(map(int, args[0].split(', ')))
+        op, d = args[1], args[2]
+        if d == "old": self.operation = lambda old:old**2
+        elif op == "*": self.operation = lambda old:old*int(d)
+        else: self.operation = lambda old:old+int(d)
+        prime, if_true, if_false = int(args[3]), int(args[4]), int(args[5])
+        self.test = lambda new: if_false if new%prime else if_true
+        self.nb_inspections = 0
 
-def test0(new): return 7 if new%17 else 4
-def test1(new): return 2 if new%3 else 3
-def test2(new): return 4 if new%19 else 0
-def test3(new): return 0 if new%7 else 2
-def test4(new): return 5 if new%2 else 7
-def test5(new): return 6 if new%5 else 1
-def test6(new): return 1 if new%11 else 3
-def test7(new): return 6 if new%13 else 5
+monkeys = []
+for data_monkey in data.split('\n\n'):
+    monkeys.append(Monkey(data_monkey))
 
-items0 = [72, 64, 51, 57, 93, 97, 68]
-items1 = [62]
-items2 = [57, 94, 69, 79, 72]
-items3 = [80, 64, 92, 93, 64, 56]
-items4 = [70, 88, 95, 99, 78, 72, 65, 94]
-items5 = [57, 95, 81, 61]
-items6 = [79, 99]
-items7 = [68, 98, 62]
-
-n = 8
-functions = [operation0, operation1, operation2, operation3, operation4, operation5, operation6, operation7]
-tests = [test0, test1, test2, test3, test4, test5, test6, test7]
-items = [items0, items1, items2, items3, items4, items5, items6, items7]
-nb_inspections = [0 for _ in range(n)]
+n = len(monkeys)
+operations = [monkey.operation for monkey in monkeys]
+tests = [monkey.test for monkey in monkeys]
+items = [monkey.items for monkey in monkeys]
+nb_inspections = [monkey.nb_inspections for monkey in monkeys]
 
 primes = [2,3,5,7,11,13,17,19]
 prod = 1
@@ -42,7 +37,7 @@ for p in primes: prod *= p
 def round():
     for monkey in range(n):
         for item in items[monkey]:
-            new = functions[monkey](item)
+            new = operations[monkey](item)
             new %= prod
             n_monkey = tests[monkey](new)
             items[n_monkey].append(new)
@@ -50,7 +45,7 @@ def round():
         items[monkey].clear()
 
 for r in range(10000):
-    #if not r%1000: print(r)
+    if not r%1000: print("round",r)
     round()
 
 nb_inspections_sorted = sorted(nb_inspections)
