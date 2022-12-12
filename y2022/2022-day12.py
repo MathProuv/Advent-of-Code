@@ -7,15 +7,13 @@ acctuvwj
 abdefghi"""
 input = aoc.get_input_file(12,2022)
 
-start = input.index('S')
-end = input.index('E')
 n, m = input.count('\n')+1, input.index('\n')
+s = input.index('S')
+e = input.index('E')
+start = (s//(m+1),s%(m+1))
+end = (e//(m+1),e%(m+1))
 input = input.replace('S','a').replace('E','z')
-input = input.splitlines()
-grid = [list(map(lambda x:ord(x)-ord('a'), line)) for line in input]
-
-start = (start//(m+1),start%(m+1))
-end = (end//(m+1),end%(m+1))
+grid = input.splitlines()
 
 ds = [[-1 for _ in range(m)] for _ in range(n)]
 ds[end[0]][end[1]] = 0
@@ -38,9 +36,10 @@ while change:
     for x,y in to_check.copy():
         neighs = get_neighbours(x,y)
         for i,j in neighs.intersection(checked):
-            if grid[i][j] - grid[x][y] <= 1:
-                if ds[x][y] < 0: ds[x][y], change = ds[i][j] + 1, True
-                else: ds[x][y] = min(ds[x][y],ds[i][j] + 1)
+            if ord(grid[i][j]) - ord(grid[x][y]) <= 1:
+                if ds[x][y] < 0 or ds[x][y] > ds[i][j] + 1:
+                    ds[x][y] = ds[i][j] + 1
+                    change = True
                 checked.add((x,y))
                 for to_add in get_neighbours(x,y).difference(checked):
                     to_check.add(to_add)
@@ -49,7 +48,7 @@ while change:
 res1 = ds[start[0]][start[1]]
 print(res1)
 
-starts = [(i,j) for i in range(n) for j in range(m) if grid[i][j] == 0]
+starts = [(i,j) for i in range(n) for j in range(m) if grid[i][j] == 'a']
 res2 = res1
 for i,j in starts:
     if ds[i][j] >= 0:
