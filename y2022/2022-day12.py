@@ -6,10 +6,10 @@ accszExk
 acctuvwj
 abdefghi"""
 input = aoc.get_input_file(12,2022)
+#input = open("../inputs/2022_12.txt").read()
 
 n, m = input.count('\n')+1, input.index('\n')
-s = input.index('S')
-e = input.index('E')
+s,e = input.index('S'), input.index('E')
 start = (s//(m+1),s%(m+1))
 end = (e//(m+1),e%(m+1))
 input = input.replace('S','a').replace('E','z')
@@ -26,7 +26,7 @@ def get_neighbours(i,j,n=n,m=m):
     if j<m-1: ans.add((i,j+1))
     return ans
 
-to_check = set(get_neighbours(end[0],end[1]))
+to_check = get_neighbours(end[0],end[1])
 checked = set()
 checked.add(end)
 change = True
