@@ -51,7 +51,6 @@ print(res1)
 starts = [(i,j) for i in range(n) for j in range(m) if grid[i][j] == 'a']
 res2 = res1
 for i,j in starts:
-    if ds[i][j] >= 0:
-        res2 = min(res2, ds[i][j])
+    if ds[i][j] >= 0: res2 = min(res2, ds[i][j])
 
 print(res2)
